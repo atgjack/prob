@@ -9,7 +9,8 @@ A GoLang library providing statistics and sampling of probability distributions.
 
 - Normal
 - Exponential
-- Uniform 
+- Uniform
+- Cauchy 
 
 #### References
 
