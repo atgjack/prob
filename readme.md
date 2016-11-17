@@ -8,7 +8,8 @@ A GoLang library providing statistics and sampling of probability distributions.
 #### Distributions Available
 
 - Normal
-- Exponential 
+- Exponential
+- Uniform 
 
 #### References
 
