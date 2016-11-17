@@ -5,7 +5,11 @@
 
 A GoLang library providing statistics and sampling of probability distributions.
 
-## References
+#### Distributions Available
+
+- Normal
+
+#### References
 
 - Porting from Javascript library [Sampson](https://github.com/atgJack/sampson)
 - Structure derived from [godist](https://github.com/e-dard/godist)

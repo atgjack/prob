@@ -2,7 +2,7 @@ package distributions
 
 import "errors"
 
-// Signifies an undefined result. Eg. When the variance is undefined.
+// Signifies bad parameters for a distribution.
 type InvalidParamsError struct{ S string }
 
 // Signifies an undefined result. Eg. When the variance is undefined.
