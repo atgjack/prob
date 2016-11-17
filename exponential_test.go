@@ -4,7 +4,7 @@ import (
   "testing"
 )
 
-type normalTest struct {
+type exponentialTest struct {
   dist        Distribution
   mean        float64
   variance    float64
@@ -16,45 +16,45 @@ type normalTest struct {
   cdf         []inOut
 }
 
-//Test at http://keisan.casio.com/exec/system/1180573188
-func Test_Normal(t *testing.T) {
-  examples := []normalTest{
-    normalTest{
-      dist:       Normal{1.0, 4.0},
-      mean:       1.0,
-      variance:   16.0,
-      stdDev:     4.0,
-      relStdDev:  4.0,
-      skewness:   0.0,
-      kurtosis:   3.0,
+//Test at http://keisan.casio.com/exec/system/1180573224
+func Test_Exponential(t *testing.T) {
+  examples := []exponentialTest{
+    exponentialTest{
+      dist:       Exponential{10},
+      mean:       10.0,
+      variance:   100.0,
+      stdDev:     10.0,
+      relStdDev:  1.0,
+      skewness:   2.0,
+      kurtosis:   9.0,
       pdf: []inOut{
-        inOut{ in: -4.0,  out: 0.04566227134725547624776 },
-        inOut{ in: 0.5,   out: 0.09895942173618737103265 },
-        inOut{ in: 12.0,  out: 0.002273390625397763192514 },
+        inOut{ in: 9.0,   out: 0.04065696597405991118835 },
+        inOut{ in: 2.5,   out: 0.07788007830714048682452 },
+        inOut{ in: 4.0,   out: 0.06703200460356393007444 },
       },
       cdf: []inOut{
-        inOut{ in: -4.0,  out: 0.1056497736668552576888 },
-        inOut{ in: 0.5,   out: 0.4502617751698871070207 },
-        inOut{ in: 12.0,  out: 0.9970202367649454432457 },
+        inOut{ in: 9.0,   out: 0.5934303402594008881165 },
+        inOut{ in: 2.5,   out: 0.2211992169285951317548 },
+        inOut{ in: 4.0,   out: 0.3296799539643606992556 },
       },
     },
-    normalTest{
-      dist:       Normal{10.0, 2.0},
-      mean:       10.0,
+    exponentialTest{
+      dist:       Exponential{2},
+      mean:       2.0,
       variance:   4.0,
       stdDev:     2.0,
-      relStdDev:  0.2,
-      skewness:   0.0,
-      kurtosis:   3.0,
+      relStdDev:  1.0,
+      skewness:   2.0,
+      kurtosis:   9.0,
       pdf: []inOut{
-        inOut{ in: 4.0,   out: 0.002215924205969003587801 },
-        inOut{ in: 6.0,   out: 0.02699548325659402597528 },
-        inOut{ in: 16.0,  out: 0.002215924205969003587801 },
+        inOut{ in: 9.0,   out: 0.005554498269121153248072 },
+        inOut{ in: 2.5,   out: 0.1432523984300950501624 },
+        inOut{ in: 4.0,   out: 0.067667641618306345947 },
       },
       cdf: []inOut{
-        inOut{ in: 4.0,   out: 0.001349898031630094526652 },
-        inOut{ in: 6.0,   out: 0.02275013194817920720028 },
-        inOut{ in: 16.0,  out: 0.9986501019683699054733 },
+        inOut{ in: 9.0,   out: 0.9888910034617576935039 },
+        inOut{ in: 2.5,   out: 0.7134952031398098996751 },
+        inOut{ in: 4.0,   out: 0.864664716763387308106 },
       },
     },
   }
@@ -105,7 +105,7 @@ func Test_Normal(t *testing.T) {
       t.Fatalf("\nSample average:\n  Expected: %f\n  Got: %f\n", example.mean, sampleMean)
     }
     sampleVar := varianceFloats(samples, sampleMean)
-    if !floatsDeciEqual(example.variance, sampleVar) {
+    if !floatsIntegerEqual(example.variance, sampleVar) {
       t.Fatalf("\nSample variance:\n  Expected: %f\n  Got: %f\n", example.variance, sampleVar)
     }
   }

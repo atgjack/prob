@@ -4,9 +4,19 @@ import (
 	"math"
 )
 
+type inOut struct {
+  in  float64
+  out float64
+}
+
 // floatsEqual determines if two values are within epsilon of each other.
 func floatsEqual(f1, f2, epsilon float64) bool {
 	return math.Abs(f1-f2) < epsilon
+}
+
+// floatsIntegerEqual determines if two values are within 10^0 of each other.
+func floatsIntegerEqual(f1, f2 float64) bool {
+	return math.Abs(f1-f2) < 1
 }
 
 // floatsDeciEqual determines if two values are within 10^-1 of each other.
