@@ -55,7 +55,7 @@ func checkNaN(f1, f2 float64) bool {
   if math.IsNaN(f1) || math.IsNaN(f2) {
    return math.IsNaN(f1) && math.IsNaN(f2)
   }
-  return true 
+  return true
 }
 
 func averageFloats(values []float64) float64 {
@@ -67,9 +67,10 @@ func averageFloats(values []float64) float64 {
 }
 
 func varianceFloats(values []float64, mean float64) float64 {
-  var total float64
+  var total, diff float64
   for _, value := range values {
-    total += math.Pow(value - mean, 2)
+    diff = value - mean
+    total += diff * diff
   }
   return total / (float64(len(values)) - 1)
 }

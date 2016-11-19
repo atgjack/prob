@@ -36,7 +36,7 @@ func (dist Gamma) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
     return 0.0, err
   }
-  result := dist.Shape / math.Pow(dist.Rate, 2)
+  result := dist.Shape / (dist.Rate * dist.Rate)
   return result, nil
 }
 
@@ -60,7 +60,7 @@ func (dist Gamma) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
     return 0.0, err
   }
-  result := math.Sqrt(dist.Shape / math.Pow(dist.Rate, 2))
+  result := math.Sqrt(dist.Shape / (dist.Rate * dist.Rate))
   return result, nil
 }
 
@@ -135,12 +135,12 @@ func (dist Gamma) random() (float64, error) {
       x = random
       v = 1 + (c * x)
     }
-    v = math.Pow(v, 3)
+    v = v * v * v
     u := rand.Float64()
-    if u < 1 - 0.331 * math.Pow(x, 4) {
+    if u < 1 - 0.331 * x * x * x * x {
       break
     }
-    if math.Log(u) < (0.5 * math.Pow(x, 2)) + d * (1 - v + math.Log(v)) {
+    if math.Log(u) < (0.5 * x * x) + d * (1 - v + math.Log(v)) {
       break
     }
   }

@@ -42,7 +42,7 @@ func (dist Pareto) Variance() (float64, error) {
   if (dist.Shape <= 2.0) {
     return math.Inf(1), nil
   }
-  result := (dist.Shape * math.Pow(dist.Scale, 2)) / (math.Pow(dist.Shape - 1, 2) * (dist.Shape - 2))
+  result := (dist.Shape * dist.Scale * dist.Scale) / ((dist.Shape - 1) * (dist.Shape - 1) * (dist.Shape - 2))
   return result, nil
 }
 
@@ -64,7 +64,7 @@ func (dist Pareto) Kurtosis() (float64, error) {
   if (dist.Shape < 3.0) {
     return math.NaN(), IndeterminateError
   }
-  result := 6 * (math.Pow(dist.Shape, 3) + math.Pow(dist.Shape,2) - (6 * (dist.Shape - 2))) / (dist.Shape * (dist.Shape - 3) * (dist.Shape - 4))
+  result := 6 * ((dist.Shape * dist.Shape * dist.Shape) + (dist.Shape * dist.Shape) - (6 * (dist.Shape - 2))) / (dist.Shape * (dist.Shape - 3) * (dist.Shape - 4))
   return result, nil
 }
 

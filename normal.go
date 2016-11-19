@@ -73,7 +73,8 @@ func (dist Normal) Pdf(x float64) (float64, error) {
   if err != nil {
     return 0.0, err
   }
-  expo := -1 * math.Pow(x - dist.Mu, 2) / (2 * variance)
+  diff := x - dist.Mu
+  expo := -1 * diff * diff / (2 * variance)
   denom := math.Sqrt(2 * variance * math.Pi)
   result := math.Exp(expo) / denom
   return result, nil

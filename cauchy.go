@@ -67,7 +67,8 @@ func (dist Cauchy) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
     return 0.0, err
   }
-  denom := math.Pow(x - dist.Location, 2) + math.Pow(dist.Scale, 2)
+  diff := x - dist.Location
+  denom := (diff * diff) + (dist.Scale * dist.Scale)
   result := dist.Scale / denom / math.Pi
   return result, nil
 }

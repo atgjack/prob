@@ -33,7 +33,8 @@ func (dist Uniform) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
     return 0.0, err
   }
-  result := math.Pow(dist.Max - dist.Min, 2) / 12
+  diff := dist.Max - dist.Min
+  result := diff * diff / 12
   return result, nil
 }
 
@@ -55,7 +56,8 @@ func (dist Uniform) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
     return 0.0, err
   }
-  result := math.Sqrt(math.Pow(dist.Max - dist.Min, 2) / 12)
+  diff := dist.Max - dist.Min
+  result := math.Sqrt(diff * diff / 12)
   return result, nil
 }
 
