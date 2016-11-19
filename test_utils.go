@@ -44,6 +44,20 @@ func floatsPicoEqual(f1, f2 float64) bool {
 	return math.Abs(f1-f2) < 0.000000000001
 }
 
+func checkInf(f1, f2 float64) bool {
+  if math.IsInf(f1,0) || math.IsInf(f2,0) {
+    return math.IsInf(f1,0) && math.IsInf(f2,0)
+  }
+  return true
+}
+
+func checkNaN(f1, f2 float64) bool {
+  if math.IsNaN(f1) || math.IsNaN(f2) {
+   return math.IsNaN(f1) && math.IsNaN(f2)
+  }
+  return true 
+}
+
 func averageFloats(values []float64) float64 {
   var total float64
   for _, value := range values {
