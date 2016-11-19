@@ -23,49 +23,49 @@ func (dist Cauchy) validate() error {
 
 func (dist Cauchy) Mean() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) Skewness() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) Kurtosis() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
-  return 0.0, IndeterminateError
+  return math.NaN(), nil
 }
 
 func (dist Cauchy) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   diff := x - dist.Location
   denom := (diff * diff) + (dist.Scale * dist.Scale)
@@ -75,7 +75,7 @@ func (dist Cauchy) Pdf(x float64) (float64, error) {
 
 func (dist Cauchy) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := (math.Atan((x - dist.Location) / dist.Scale) / math.Pi) + 0.5
   return result, nil
@@ -83,7 +83,7 @@ func (dist Cauchy) Cdf(x float64) (float64, error) {
 
 func (dist Cauchy) random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   var u float64
   for u == 0.0 || u == 0.5 {

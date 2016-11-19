@@ -51,7 +51,7 @@ func (dist Pareto) Skewness() (float64, error) {
     return math.NaN(), err
   }
   if (dist.Shape < 3.0) {
-    return math.NaN(), IndeterminateError
+    return math.NaN(), nil
   }
   result := 2 * (1 + dist.Shape) / (dist.Shape - 3) * math.Sqrt((dist.Shape - 2) / dist.Shape)
   return result, nil
@@ -62,7 +62,7 @@ func (dist Pareto) Kurtosis() (float64, error) {
     return math.NaN(), err
   }
   if (dist.Shape < 3.0) {
-    return math.NaN(), IndeterminateError
+    return math.NaN(), nil
   }
   result := 6 * ((dist.Shape * dist.Shape * dist.Shape) + (dist.Shape * dist.Shape) - (6 * (dist.Shape - 2))) / (dist.Shape * (dist.Shape - 3) * (dist.Shape - 4))
   return result, nil
@@ -70,7 +70,7 @@ func (dist Pareto) Kurtosis() (float64, error) {
 
 func (dist Pareto) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   variance, _ := dist.Variance()
   if math.IsInf(variance, 0) {
@@ -82,7 +82,7 @@ func (dist Pareto) StdDev() (float64, error) {
 
 func (dist Pareto) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   variance, _ := dist.Variance()
   if math.IsInf(variance, 0) {
@@ -98,7 +98,7 @@ func (dist Pareto) RelStdDev() (float64, error) {
 
 func (dist Pareto) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if x < dist.Scale {
     return 0.0, nil
@@ -109,7 +109,7 @@ func (dist Pareto) Pdf(x float64) (float64, error) {
 
 func (dist Pareto) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if (x < dist.Scale) {
     return 0.0, nil
@@ -120,7 +120,7 @@ func (dist Pareto) Cdf(x float64) (float64, error) {
 
 func (dist Pareto) random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   value := dist.Scale / math.Pow(1 - rand.Float64(), 1 / dist.Shape)
   return value, nil

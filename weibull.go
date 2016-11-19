@@ -70,7 +70,7 @@ func (dist Weibull) Kurtosis() (float64, error) {
 
 func (dist Weibull) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   variance, _ := dist.Variance()
   result := math.Sqrt(variance)
@@ -79,7 +79,7 @@ func (dist Weibull) StdDev() (float64, error) {
 
 func (dist Weibull) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   variance, _ := dist.Variance()
   mean, _ := dist.Mean()
@@ -89,7 +89,7 @@ func (dist Weibull) RelStdDev() (float64, error) {
 
 func (dist Weibull) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if x < 0.0 {
     return 0.0, nil
@@ -100,7 +100,7 @@ func (dist Weibull) Pdf(x float64) (float64, error) {
 
 func (dist Weibull) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if (x < 0.0) {
     return 0.0, nil
@@ -111,7 +111,7 @@ func (dist Weibull) Cdf(x float64) (float64, error) {
 
 func (dist Weibull) random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   value := dist.Scale * math.Pow(-math.Log(rand.Float64()), 1 / dist.Shape)
   return value, nil

@@ -23,7 +23,7 @@ func (dist Uniform) validate() error {
 
 func (dist Uniform) Mean() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := (dist.Min + dist.Max) / 2
   return result, nil
@@ -31,7 +31,7 @@ func (dist Uniform) Mean() (float64, error) {
 
 func (dist Uniform) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   diff := dist.Max - dist.Min
   result := diff * diff / 12
@@ -40,21 +40,21 @@ func (dist Uniform) Variance() (float64, error) {
 
 func (dist Uniform) Skewness() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return 0.0, nil
 }
 
 func (dist Uniform) Kurtosis() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return -6.0 / 5.0, nil
 }
 
 func (dist Uniform) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   diff := dist.Max - dist.Min
   result := math.Sqrt(diff * diff / 12)
@@ -63,7 +63,7 @@ func (dist Uniform) StdDev() (float64, error) {
 
 func (dist Uniform) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := (dist.Max - dist.Min) / (math.Sqrt(3) * (dist.Max + dist.Min))
   return result, nil
@@ -71,7 +71,7 @@ func (dist Uniform) RelStdDev() (float64, error) {
 
 func (dist Uniform) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if x < dist.Min || x > dist.Max {
     return 0.0, nil
@@ -82,7 +82,7 @@ func (dist Uniform) Pdf(x float64) (float64, error) {
 
 func (dist Uniform) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if (x < dist.Min) {
     return 0.0, nil
@@ -96,7 +96,7 @@ func (dist Uniform) Cdf(x float64) (float64, error) {
 
 func (dist Uniform) random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   value := dist.Min + (rand.Float64() * (dist.Max - dist.Min))
   return value, nil

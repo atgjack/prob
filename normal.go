@@ -23,14 +23,14 @@ func (dist Normal) validate() error {
 
 func (dist Normal) Mean() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return dist.Mu, nil
 }
 
 func (dist Normal) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := dist.Sigma * dist.Sigma
   return result, nil
@@ -38,28 +38,28 @@ func (dist Normal) Variance() (float64, error) {
 
 func (dist Normal) Skewness() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return 0.0, nil
 }
 
 func (dist Normal) Kurtosis() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return 3.0, nil
 }
 
 func (dist Normal) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   return dist.Sigma, nil
 }
 
 func (dist Normal) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := dist.Sigma / dist.Mu
   return result, nil
@@ -67,11 +67,11 @@ func (dist Normal) RelStdDev() (float64, error) {
 
 func (dist Normal) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   variance, err := dist.Variance()
   if err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   diff := x - dist.Mu
   expo := -1 * diff * diff / (2 * variance)
@@ -82,7 +82,7 @@ func (dist Normal) Pdf(x float64) (float64, error) {
 
 func (dist Normal) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   inner := 1 + math.Erf( (x - dist.Mu) / (dist.Sigma * math.Sqrt(2)) )
   result := math.Abs(inner) / 2;
@@ -91,7 +91,7 @@ func (dist Normal) Cdf(x float64) (float64, error) {
 
 func (dist Normal) random() (float64, float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, 0.0, err
+    return math.NaN(), math.NaN(), err
   }
   a := rand.Float64() * 2 * math.Pi
   b := math.Sqrt(-2.0 * math.Log(1.0 - rand.Float64()))

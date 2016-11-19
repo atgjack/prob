@@ -26,7 +26,7 @@ func (dist Gamma) validate() error {
 
 func (dist Gamma) Mean() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := dist.Shape / dist.Rate
   return result, nil
@@ -34,7 +34,7 @@ func (dist Gamma) Mean() (float64, error) {
 
 func (dist Gamma) Variance() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := dist.Shape / (dist.Rate * dist.Rate)
   return result, nil
@@ -42,7 +42,7 @@ func (dist Gamma) Variance() (float64, error) {
 
 func (dist Gamma) Skewness() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := 2 / math.Sqrt(dist.Shape)
   return result, nil
@@ -50,7 +50,7 @@ func (dist Gamma) Skewness() (float64, error) {
 
 func (dist Gamma) Kurtosis() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := 6 / dist.Shape
   return result, nil
@@ -58,7 +58,7 @@ func (dist Gamma) Kurtosis() (float64, error) {
 
 func (dist Gamma) StdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := math.Sqrt(dist.Shape / (dist.Rate * dist.Rate))
   return result, nil
@@ -66,7 +66,7 @@ func (dist Gamma) StdDev() (float64, error) {
 
 func (dist Gamma) RelStdDev() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   result := 1 / math.Sqrt(dist.Shape)
   return result, nil
@@ -74,7 +74,7 @@ func (dist Gamma) RelStdDev() (float64, error) {
 
 func (dist Gamma) Pdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if x < 0 {
     return 0.0, nil
@@ -96,7 +96,7 @@ func (dist Gamma) Pdf(x float64) (float64, error) {
 
 func (dist Gamma) Cdf(x float64) (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if (x <= 0) {
     return 0.0, nil
@@ -107,18 +107,18 @@ func (dist Gamma) Cdf(x float64) (float64, error) {
 
 func (dist Gamma) random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return 0.0, err
+    return math.NaN(), err
   }
   if (dist.Shape < 1) {
     random := rand.Float64()
     newDist := Gamma{ Shape: dist.Shape + 1, Rate: dist.Rate }
     grandom, err := newDist.random()
     if err != nil {
-      return 0.0, err
+      return math.NaN(), err
     }
     result := grandom * math.Pow(random, 1 / dist.Shape)
     if err != nil {
-      return 0.0, err
+      return math.NaN(), err
     }
     return result, nil
   }
@@ -130,7 +130,7 @@ func (dist Gamma) random() (float64, error) {
     for ok := true; ok; ok = v <= 0 {
       random, _, err := normal.random()
       if err != nil {
-        return 0.0, err
+        return math.NaN(), err
       }
       x = random
       v = 1 + (c * x)

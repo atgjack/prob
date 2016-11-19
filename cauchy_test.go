@@ -1,18 +1,19 @@
 package distributions
 
 import (
+  "math"
   "testing"
 )
 
 type cauchyTest struct {
   magnitude   float64
   dist        Distribution
-  mean        error
-  variance    error
-  stdDev      error
-  relStdDev   error
-  skewness    error
-  kurtosis    error
+  mean        float64
+  variance    float64
+  stdDev      float64
+  relStdDev   float64
+  skewness    float64
+  kurtosis    float64
   pdf         []inOut
   cdf         []inOut
 }
@@ -22,12 +23,12 @@ func Test_Cauchy(t *testing.T) {
   examples := []cauchyTest{
     cauchyTest{
       dist:       Cauchy{10.0, 2.0},
-      mean:       IndeterminateError,
-      variance:   IndeterminateError,
-      stdDev:     IndeterminateError,
-      relStdDev:  IndeterminateError,
-      skewness:   IndeterminateError,
-      kurtosis:   IndeterminateError,
+      mean:       math.NaN(),
+      variance:   math.NaN(),
+      stdDev:     math.NaN(),
+      relStdDev:  math.NaN(),
+      skewness:   math.NaN(),
+      kurtosis:   math.NaN(),
       pdf: []inOut{
         inOut{ in: 4.0,   out: 0.01591549430918953357689 },
         inOut{ in: 6.0,   out: 0.03183098861837906715378 },
@@ -41,12 +42,12 @@ func Test_Cauchy(t *testing.T) {
     },
     cauchyTest{
       dist:       Cauchy{1.0, 4.0},
-      mean:       IndeterminateError,
-      variance:   IndeterminateError,
-      stdDev:     IndeterminateError,
-      relStdDev:  IndeterminateError,
-      skewness:   IndeterminateError,
-      kurtosis:   IndeterminateError,
+      mean:       math.NaN(),
+      variance:   math.NaN(),
+      stdDev:     math.NaN(),
+      relStdDev:  math.NaN(),
+      skewness:   math.NaN(),
+      kurtosis:   math.NaN(),
       pdf: []inOut{
         inOut{ in: 2.0,   out: 0.07489644380795074624418 },
         inOut{ in: 0.5,   out: 0.07835320275293308837853 },
@@ -62,28 +63,40 @@ func Test_Cauchy(t *testing.T) {
 
   for _, example := range examples {
     mean, err := example.dist.Mean()
-    if err == nil || err != example.mean {
-      t.Fatalf("\nMean:\n  Expected: %f\n  Got: %f\n", example.mean, mean)
+    if err != nil || !floatsPicoEqual(mean, example.mean) {
+      if !checkInf(mean, example.mean) && !checkNaN(mean, example.mean) {
+        t.Fatalf("\nMean:\n  Expected: %f\n  Got: %f\n", example.mean, mean)
+      }
     }
     variance, err := example.dist.Variance()
-    if err == nil || err != example.variance {
-      t.Fatalf("\nVariance:\n  Expected: %f\n  Got: %f\n", example.variance, variance)
+    if err != nil || !floatsPicoEqual(variance, example.variance) {
+      if !checkInf(variance, example.variance) && !checkNaN(variance, example.variance) {
+        t.Fatalf("\nVariance:\n  Expected: %f\n  Got: %f\n", example.variance, variance)
+      }
     }
     stdDev, err := example.dist.StdDev()
-    if err == nil || err != example.stdDev {
-      t.Fatalf("\nStdDev:\n  Expected: %f\n  Got: %f\n", example.stdDev, stdDev)
+    if err != nil || !floatsPicoEqual(stdDev, example.stdDev) {
+      if !checkInf(stdDev, example.stdDev) && !checkNaN(stdDev, example.stdDev) {
+        t.Fatalf("\nStdDev:\n  Expected: %f\n  Got: %f\n", example.stdDev, stdDev)
+      }
     }
     relStdDev, err := example.dist.RelStdDev()
-    if err == nil || err != example.relStdDev {
-      t.Fatalf("\nRelStdDev:\n  Expected: %f\n  Got: %f\n", example.relStdDev, relStdDev)
+    if err != nil || !floatsPicoEqual(relStdDev, example.relStdDev) {
+      if !checkInf(relStdDev, example.relStdDev) && !checkNaN(relStdDev, example.relStdDev) {
+        t.Fatalf("\nRelStdDev:\n  Expected: %f\n  Got: %f\n", example.relStdDev, relStdDev)
+      }
     }
     skewness, err := example.dist.Skewness()
-    if err == nil || err != example.skewness {
-      t.Fatalf("\nSkewness:\n  Expected: %f\n  Got: %f\n", example.skewness, skewness)
+    if err != nil || !floatsPicoEqual(skewness, example.skewness) {
+      if !checkInf(skewness, example.skewness) && !checkNaN(skewness, example.skewness) {
+        t.Fatalf("\nSkewness:\n  Expected: %f\n  Got: %f\n", example.skewness, skewness)
+      }
     }
     kurtosis, err := example.dist.Kurtosis()
-    if err == nil || err != example.kurtosis {
-      t.Fatalf("\nKurtosis:\n  Expected: %f\n  Got: %f\n", example.kurtosis, kurtosis)
+    if err != nil || !floatsPicoEqual(kurtosis, example.kurtosis) {
+      if !checkInf(kurtosis, example.kurtosis) && !checkNaN(kurtosis, example.kurtosis) {
+        t.Fatalf("\nKurtosis:\n  Expected: %f\n  Got: %f\n", example.kurtosis, kurtosis)
+      }
     }
     for _, pdf := range example.pdf {
       out, err := example.dist.Pdf(pdf.in)
