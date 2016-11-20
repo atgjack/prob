@@ -44,7 +44,7 @@ func Test_Uniform(t *testing.T) {
       },
     },
     uniformTest{
-      epsilon:    10.0,
+      epsilon:    12.0,
       dist:       Uniform{420.0, 666.0},
       mean:       543.0,
       variance:   5043.0,
