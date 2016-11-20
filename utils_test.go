@@ -7,7 +7,7 @@ import (
 
 type lowerIncGamma struct { s, x, out float64 }
 type nChoosek struct { n, k, out float64 }
-type stirlingNum struct { n, out float64 }
+type betaFn struct { a, b, out float64 } 
 
 // Test at http://keisan.casio.com/exec/system/1180573447
 // Have to regularize it here.
@@ -40,6 +40,23 @@ func Test_Choose(t *testing.T) {
   }
   for _, example := range examples {
     result := Choose(example.n, example.k)
+    if result != example.out {
+      t.Fatalf("\n  Expected: %f\n  Got: %f\n", example.out, result)
+    }
+  }
+}
+
+func Test_BetaFn(t *testing.T) {
+  examples := []betaFn {
+    betaFn{ 10, 2,  0.00909090909090909090909 },
+    betaFn{ 14, 2,  0.00476190476190476190476 },
+    betaFn{  8,  3, 0.0027777777777777777778  },
+    betaFn{  4,  2, 0.05 },
+    betaFn{  5,  5, 0.00158730158730158730159 },
+    betaFn{  5,  1, 0.2 },
+  }
+  for _, example := range examples {
+    result := BetaFn(example.a, example.b)
     if result != example.out {
       t.Fatalf("\n  Expected: %f\n  Got: %f\n", example.out, result)
     }

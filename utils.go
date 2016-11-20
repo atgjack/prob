@@ -36,3 +36,14 @@ func Choose(n, k float64) float64 {
   }
   return r
 }
+
+// A variadic version of the Beta function.
+func BetaFn(a ...float64) float64 {
+  product := 1.0
+  sum := 0.0
+  for _, ai := range a {
+    product *= math.Gamma(ai)
+    sum += ai
+  }
+  return product / math.Gamma(sum)
+}
