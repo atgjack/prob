@@ -4,7 +4,7 @@ import (
   "testing"
 )
 
-type betaTest struct {
+type logisticTest struct {
   dist        Distribution
   mean        float64
   variance    float64
@@ -16,46 +16,46 @@ type betaTest struct {
   cdf         []inOut
 }
 
-// Test at http://keisan.casio.com/exec/system/1180573225
-func Test_Beta(t *testing.T) {
-  examples := []betaTest{
-    betaTest{
-      dist:       Beta{1, 2},
-      mean:       1.0 / 3.0,
-      variance:   1.0 / 18.0,
-      stdDev:     0.2357022603955158414669,
+// Test at http://keisan.casio.com/exec/system/1180573209
+func Test_Logistic(t *testing.T) {
+  examples := []logisticTest{
+    logisticTest{
+      dist:       Logistic{1, 2},
+      mean:       1.0,
+      variance:   13.15947253478581149178,
+      stdDev:     3.627598728468435701188,
       relStdDev:  0.7071067811865475244008,
-      skewness:   0.5656854249492380195207,
-      kurtosis:   -3.0 / 5.0,
+      skewness:   0.0,
+      kurtosis:   1.2,
       pdf: []inOut{
-        inOut{ in: 0.4,   out: 1.2 },
-        inOut{ in: 0.6,   out: 0.8 },
-        inOut{ in: 0.14,  out: 1.72 },
+        inOut{ in: 1.0,   out: 0.125 },
+        inOut{ in: 3.0,   out: 0.09830596662074092626871 },
+        inOut{ in: 9.0,   out: 0.008831353106645558210781 },
 
       },
       cdf: []inOut{
-        inOut{ in: 0.4,   out: 0.64 },
-        inOut{ in: 0.6,   out: 0.84 },
-        inOut{ in: 0.14,  out: 0.2604 },
+        inOut{ in: 1.0,   out: 0.5 },
+        inOut{ in: 3.0,   out: 0.7310585786300048792512 },
+        inOut{ in: 9.0,   out: 0.9820137900379084419732 },
       },
     },
-    betaTest{
-      dist:       Beta{5, 4},
-      mean:       5.0 / 9.0,
-      variance:   2.0 / 81.0,
-      stdDev:     0.1571348402636772276446,
-      relStdDev:  0.258198889747161125678,
-      skewness:   -0.1285648693066450044365,
-      kurtosis:   -21.0 / 44.0,
+    logisticTest{
+      dist:       Logistic{5, 4},
+      mean:       5.0,
+      variance:   52.63789013914324596712,
+      stdDev:     7.255197456936871402376,
+      relStdDev:  1.451039491387374280475,
+      skewness:   0.0,
+      kurtosis:   1.2,
       pdf: []inOut{
-        inOut{ in: 0.4,   out: 1.548288 },
-        inOut{ in: 0.6,   out: 2.322432 },
-        inOut{ in: 0.14,  out: 0.0684172364288 },
+        inOut{ in: 1.0,   out: 0.04915298331037046313436 },
+        inOut{ in: 3.0,   out: 0.05875092805039862226733 },
+        inOut{ in: 9.0,   out: 0.04915298331037046313436 },
       },
       cdf: []inOut{
-        inOut{ in: 0.4,   out: 0.1736704 },
-        inOut{ in: 0.6,   out: 0.5940864 },
-        inOut{ in: 0.14,  out: 0.002079010303104 },
+        inOut{ in: 1.0,   out: 0.2689414213699951207488 },
+        inOut{ in: 3.0,   out: 0.3775406687981454353611 },
+        inOut{ in: 9.0,   out: 0.7310585786300048792512 },
       },
     },
   }

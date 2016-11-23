@@ -16,6 +16,19 @@ A GoLang library providing statistics and sampling of probability distributions.
 - Chi-Squared
 - Student's T
 - Weibull
+- Beta
+- Binomial
+- Poisson
+- Geometric
+- Logistic
+
+#### Special Functions
+
+- Binomial Coefficient
+- Regularized Lower Incomplete Gamma
+- Beta
+- Incomplete Beta
+- Regularized Incomplete Beta
 
 #### References
 
