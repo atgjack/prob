@@ -10,7 +10,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Gamma_distribution
 type Gamma struct {
-  Shape  float64
+  Shape   float64
   Rate    float64
 }
 
@@ -18,7 +18,7 @@ func (dist Gamma) validate() error {
   if dist.Shape <= 0 {
     return InvalidParamsError{ "Shape must be greater than zero." }
   }
-  if dist.Shape <= 0 {
+  if dist.Rate <= 0 {
     return InvalidParamsError{ "Rate must be greater than zero." }
   }
   return nil

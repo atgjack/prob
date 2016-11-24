@@ -93,9 +93,9 @@ func (dist Poisson) random() (float64, error) {
   }
   mu := dist.Mu
   k := 0.0
-  for mu > 10 {
-    m := math.Floor((mu * (7/8)) + .5)
-    gamma := Gamma{ Shape: m, Rate: 1 }
+  for mu > 10.0 {
+    m := math.Floor((mu * (7.0/8.0)) + 0.5)
+    gamma := Gamma{ Shape: m, Rate: 1.0 }
     x, err := gamma.random()
     if err != nil {
       return math.NaN(), err
@@ -118,7 +118,7 @@ func (dist Poisson) random() (float64, error) {
     k++
     ok = prod > emu
   }
-  return k - 1, nil
+  return k - 1.0, nil
 }
 
 func (dist Poisson) Sample(n int) ([]float64, error) {
