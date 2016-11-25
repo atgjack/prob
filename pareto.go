@@ -122,7 +122,7 @@ func (dist Pareto) random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  value := dist.Scale / math.Pow(1 - rand.Float64(), 1 / dist.Shape)
+  value := dist.Scale / math.Pow(rand.Float64(), 1 / dist.Shape)
   return value, nil
 }
 

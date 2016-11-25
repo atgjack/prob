@@ -95,14 +95,12 @@ func (dist Poisson) random() (float64, error) {
   k := 0.0
   for mu > 10.0 {
     m := math.Floor((mu * (7.0/8.0)) + 0.5)
-    gamma := Gamma{ Shape: m, Rate: 1.0 }
-    x, err := gamma.random()
+    x, err := Gamma{ Shape: m, Rate: 1.0 }.random()
     if err != nil {
       return math.NaN(), err
     }
     if x >= mu {
-      binomial := Binomial{ Prob: mu / x, Trials: m - 1 }
-      rand, err := binomial.random()
+      rand, err := Binomial{ Prob: mu / x, Trials: m - 1 }.random()
       if err != nil {
         return math.NaN(), err
       }

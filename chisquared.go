@@ -101,12 +101,11 @@ func (dist ChiSquared) random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  gamma := Gamma{ Shape: dist.Degrees / 2, Rate: 1.0 }
-  gammaRandom, err := gamma.random()
+  random, err := Gamma{ Shape: dist.Degrees / 2, Rate: 1.0 }.random()
   if err != nil {
     return math.NaN(), err
   }
-  value := 2 * gammaRandom
+  value := 2 * random
   return value, nil
 }
 

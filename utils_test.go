@@ -12,7 +12,7 @@ type betaIncFn struct { x, a, b, out float64 }
 
 // Test at http://keisan.casio.com/exec/system/1180573447
 // Have to regularize it here.
-func Test_Lowerincgamma(t *testing.T) {
+func Test_Utils_Lowerincgamma(t *testing.T) {
   examples := []lowerIncGamma{
     lowerIncGamma{ 1,  2, 0.864664716763387308106  },
     lowerIncGamma{ 1,  3, 0.9502129316321360570207 },
@@ -30,7 +30,7 @@ func Test_Lowerincgamma(t *testing.T) {
   }
 }
 
-func Test_Choose(t *testing.T) {
+func Test_Utils_Choose(t *testing.T) {
   examples := []nChoosek {
     nChoosek{ 10, 2,  45    },
     nChoosek{ 14, 2,  91    },
@@ -47,7 +47,7 @@ func Test_Choose(t *testing.T) {
   }
 }
 
-func Test_BetaFn(t *testing.T) {
+func Test_Utils_BetaFn(t *testing.T) {
   examples := []betaFn {
     betaFn{ 10, 2,  0.00909090909090909090909 },
     betaFn{ 14, 2,  0.00476190476190476190476 },
@@ -64,7 +64,7 @@ func Test_BetaFn(t *testing.T) {
   }
 }
 
-func Test_BetaInc(t *testing.T) {
+func Test_Utils_BetaInc(t *testing.T) {
   examples := []betaIncFn {
     betaIncFn{ 0.8, 10,  2, 0.00292838679272727272727 },
     betaIncFn{ 0.9, 14,  2, 0.00261449056628125714286 },
@@ -81,7 +81,7 @@ func Test_BetaInc(t *testing.T) {
   }
 }
 
-func Test_RegBetaInc(t *testing.T) {
+func Test_Utils_RegBetaInc(t *testing.T) {
   examples := []betaIncFn {
     betaIncFn{ 0.8, 10,  2, 0.3221225472 },
     betaIncFn{ 0.9, 14,  2, 0.549043018919064 },

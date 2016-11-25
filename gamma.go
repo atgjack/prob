@@ -105,42 +105,44 @@ func (dist Gamma) Cdf(x float64) (float64, error) {
   return result, nil
 }
 
+// Ref: https://github.com/ampl/gsl/blob/master/randist/gamma.c
 func (dist Gamma) random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  if (dist.Shape < 1) {
+  if (dist.Shape < 1.0) {
     random := rand.Float64()
-    newDist := Gamma{ Shape: dist.Shape + 1, Rate: dist.Rate }
-    grandom, err := newDist.random()
+    grandom, err := Gamma{ Shape: dist.Shape + 1.0, Rate: dist.Rate }.random()
     if err != nil {
       return math.NaN(), err
     }
-    result := grandom * math.Pow(random, 1 / dist.Shape)
+    result := grandom * math.Pow(random, 1.0 / dist.Shape)
     if err != nil {
       return math.NaN(), err
     }
     return result, nil
   }
   var x, v float64
-  d := dist.Shape - (1 / 3)
-  c := 1 / math.Sqrt(9 * d)
-  normal := Normal{ Mu: 0, Sigma: 1 }
+  d := dist.Shape - (1.0 / 3.0)
+  c := 1.0 / math.Sqrt(9.0 * d)
   for {
-    for ok := true; ok; ok = v <= 0 {
-      random, _, err := normal.random()
+    for {
+      random, _, err := Normal{ Mu: 0.0, Sigma: 1.0 }.random()
       if err != nil {
         return math.NaN(), err
       }
       x = random
-      v = 1 + (c * x)
+      v = 1.0 + (c * x)
+      if v > 0.0 {
+        break
+      }
     }
     v = v * v * v
     u := rand.Float64()
-    if u < 1 - 0.331 * x * x * x * x {
+    if u < 1.0 - 0.0331 * x * x * x * x {
       break
     }
-    if math.Log(u) < (0.5 * x * x) + d * (1 - v + math.Log(v)) {
+    if math.Log(u) < (0.5 * x * x) + d * (1.0 - v + math.Log(v)) {
       break
     }
   }

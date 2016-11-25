@@ -2,7 +2,6 @@ package distributions
 
 import (
   "math"
-  "math/rand"
 )
 
 //TheBeta  Distribution is a continuous probability distribution
@@ -97,101 +96,21 @@ func (dist Beta) Cdf(x float64) (float64, error) {
   return result, nil
 }
 
-// Ref: https://compbio.soe.ucsc.edu/gen_sequence/gen_beta.c
-// Ref: https://github.com/e-dard/godist/blob/master/beta.go
+// Ref: https://github.com/ampl/gsl/blob/master/randist/beta.c
 func (dist Beta) random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  min := math.Min(dist.Alpha, dist.Beta)
-  max := math.Max(dist.Alpha, dist.Beta)
-  // Use Joehnk's algorithm.
-  if max < 0.5 {
-    u1 := rand.Float64()
-    u2 := rand.Float64()
-    result := math.Pow(u1, 1 / dist.Alpha) / (math.Pow(u1, 1 / dist.Alpha) + math.Pow(u2, 1 / dist.Beta))
-    return result, nil
-  // Use Cheng's BC Algorithm
-  } else if min <= 1.0 {
-    var u1, u2, v, w, y, z float64
-    alpha := min + max
-    beta := 1.0 / min
-    delta := 1.0 + max - min
-  	k1 := delta * (0.0138889 + (0.0416667 * min)) / ((max * beta) - 0.777778)
-  	k2 := 0.25 + ((0.5 + 0.25) * min / delta)
-    setvw := func() {
-      v = beta * math.Log(u1 / (1.0 - u1))
-      if v <= 709.78 {
-        w = dist.Alpha * math.Exp(v)
-        if math.IsInf(w,0) {
-          w = math.MaxFloat64
-        }
-      } else {
-        w = math.MaxFloat64
-      }
-    }
-    for {
-      u1 = rand.Float64()
-      u2 = rand.Float64()
-      if u1 < 0.5 {
-        y = u1 * u2
-        z = u1 * y
-        if (0.25 * u2) + z - y >= k1 {
-          continue
-        }
-      } else {
-        z = u1 * u1 * u2
-        if z <= 0.25 {
-          setvw()
-          break
-        }
-        if z >= k2 {
-          continue
-        }
-      }
-      setvw()
-      if alpha * (math.Log(alpha / (min + w)) + v) - 1.3862944 >= math.Log(z) {
-        break
-      }
-    }
-    if dist.Alpha == min {
-      return min / (min + w), nil
-    }
-    return w / (min + w), nil
-  // Use Cheng's BB Algorithm
-  } else {
-    alpha := min + max
-    beta := math.Sqrt((alpha - 2.0) / ((2.0 * min * max) - alpha))
-    gamma := min + (1.0 / beta)
-    var r, s, t, v, w, z float64
-    for {
-      u1 := rand.Float64()
-      u2 := rand.Float64()
-      v = beta * math.Log(u1 / (1.0 - u1))
-      if v <= 709.78 {
-        w = dist.Alpha * math.Exp(v)
-        if math.IsInf(w,0) {
-          w = math.MaxFloat64
-        }
-      } else {
-        w = math.MaxFloat64
-      }
-      z = u1 * u1 * u2
-      r = (gamma * v) - 1.3862944
-      s = min + r - w
-      if s + 2.609438 >= 5.0 * z {
-        break
-      }
-      t = math.Log(z)
-      if r + (alpha * math.Log(alpha / (max + w))) < t {
-        break
-      }
-    }
-    if dist.Alpha != min {
-      return max / (max + w), nil
-    }
-    return w / (max + w), nil
+  u1, err := Gamma{ Shape: dist.Alpha, Rate: 1.0 }.random()
+  if err != nil {
+    return math.NaN(), err
   }
+  u2, err := Gamma{ Shape: dist.Beta, Rate: 1.0 }.random()
+  if err != nil {
+    return math.NaN(), err
+  }
+  result := u1 / (u1 + u2)
+  return result, nil
 }
 
 func (dist Beta) Sample(n int) ([]float64, error) {

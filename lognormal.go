@@ -101,8 +101,7 @@ func (dist LogNormal) random() (float64, float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), math.NaN(), err
   }
-  normal := Normal{ Mu: dist.Mu, Sigma: dist.Sigma }
-  r1, r2, err := normal.random()
+  r1, r2, err := Normal{ Mu: dist.Mu, Sigma: dist.Sigma }.random()
   if err != nil {
     return math.NaN(), math.NaN(), err
   }

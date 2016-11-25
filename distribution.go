@@ -14,3 +14,7 @@ type Distribution interface {
   Cdf(float64)  (float64, error)
   Sample(int)   ([]float64, error)
 }
+
+// Signifies bad parameters for a distribution.
+type InvalidParamsError struct{ S string }
+func (e InvalidParamsError) Error() string { return e.S }

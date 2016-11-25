@@ -138,13 +138,11 @@ func (dist StudentsT) random() (float64, error) {
     return math.NaN(), err
   }
   if (dist.Degrees <= 2) {
-    normal := Normal{ Mu: 0, Sigma: 1}
-    chiSquared := ChiSquared{ Degrees: dist.Degrees }
-    y1, _, err := normal.random()
+    y1, _, err := Normal{ Mu: 0, Sigma: 1 }.random()
     if err != nil {
       return math.NaN(), err
     }
-    y2, err := chiSquared.random()
+    y2, err := ChiSquared{ Degrees: dist.Degrees }.random()
     if err != nil {
       return math.NaN(), err
     }
@@ -153,22 +151,20 @@ func (dist StudentsT) random() (float64, error) {
   } else {
     var y1, y2, z float64
     var err error
-    normal := Normal{ Mu: 0, Sigma: 1}
-    exponential := Exponential{ Lambda: 1 / ((dist.Degrees / 2) - 1) }
     ok := true
     for ok {
-      y1, _, err = normal.random()
+      y1, _, err = Normal{ Mu: 0, Sigma: 1 }.random()
       if err != nil {
         return math.NaN(), err
       }
-      y1, err = exponential.random()
+      y1, err = Exponential{ Lambda: 1 / ((dist.Degrees / 2) - 1) }.random()
       if err != nil {
         return math.NaN(), err
       }
       z = y1 * y2 / (dist.Degrees - 2)
       ok = 1 - z < 0 || math.Exp(-y2 - z) > 1 - z
     }
-    result := y1 / math.Sqrt((1 - (2 / dist.Degrees)) * (1  - z))
+    result := y1 / math.Sqrt((1 - (2 / dist.Degrees)) * (1 - z))
     return result, nil
   }
 }
