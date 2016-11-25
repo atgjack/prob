@@ -12,7 +12,7 @@ type betaIncFn struct { x, a, b, out float64 }
 
 // Test at http://keisan.casio.com/exec/system/1180573447
 // Have to regularize it here.
-func Test_Utils_Lowerincgamma(t *testing.T) {
+func Test_Utils_GammaIncLower(t *testing.T) {
   examples := []lowerIncGamma{
     lowerIncGamma{ 1,  2, 0.864664716763387308106  },
     lowerIncGamma{ 1,  3, 0.9502129316321360570207 },
@@ -22,7 +22,7 @@ func Test_Utils_Lowerincgamma(t *testing.T) {
     lowerIncGamma{ 10, 3, 400.0708926563052888277  },
   }
   for _, example := range examples {
-    result := Lowerincgamma(example.s, example.x)
+    result := GammaIncLower(example.s, example.x)
     out := example.out / math.Gamma(example.s)
     if !floatsPicoEqual(result, out) {
       t.Fatalf("\n  Expected: %f\n  Got: %f\n", out, result)
@@ -30,7 +30,7 @@ func Test_Utils_Lowerincgamma(t *testing.T) {
   }
 }
 
-func Test_Utils_Choose(t *testing.T) {
+func Test_Utils_BinomialCoefficient(t *testing.T) {
   examples := []nChoosek {
     nChoosek{ 10, 2,  45    },
     nChoosek{ 14, 2,  91    },
@@ -40,7 +40,7 @@ func Test_Utils_Choose(t *testing.T) {
     nChoosek{ 20, 14, 38760 },
   }
   for _, example := range examples {
-    result := Choose(example.n, example.k)
+    result := BinomialCoefficient(example.n, example.k)
     if result != example.out {
       t.Fatalf("\n  Expected: %f\n  Got: %f\n", example.out, result)
     }

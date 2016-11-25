@@ -93,7 +93,7 @@ func (dist ChiSquared) Cdf(x float64) (float64, error) {
     result := 1 - math.Exp(-x / 2)
     return result, nil
   }
-  result := Lowerincgamma(dist.Degrees / 2, x / 2);
+  result := GammaIncLower(dist.Degrees / 2, x / 2);
   return result, nil
 }
 

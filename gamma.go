@@ -101,7 +101,7 @@ func (dist Gamma) Cdf(x float64) (float64, error) {
   if (x <= 0) {
     return 0.0, nil
   }
-  result := Lowerincgamma(dist.Shape, x * dist.Rate)
+  result := GammaIncLower(dist.Shape, x * dist.Rate)
   return result, nil
 }
 

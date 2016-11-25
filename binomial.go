@@ -99,7 +99,7 @@ func (dist Binomial) Pdf(x float64) (float64, error) {
     }
     return 0.0, nil
   }
-  cnk := Choose(dist.Trials, x)
+  cnk := BinomialCoefficient(dist.Trials, x)
   pows := math.Pow(dist.Prob, x) * math.Pow(1 - dist.Prob, dist.Trials - x)
   if math.IsInf(cnk, 0) {
     return 0.0, nil
@@ -121,7 +121,7 @@ func (dist Binomial) Cdf(x float64) (float64, error) {
   result := 0.0
   end := math.Floor(x) + 1
   for i := 0.0; i < end; i++ {
-    current := Choose(dist.Trials, i)
+    current := BinomialCoefficient(dist.Trials, i)
     pows := math.Pow(dist.Prob, i) * math.Pow(1 - dist.Prob, dist.Trials - i)
     result += current * pows
   }
@@ -195,7 +195,7 @@ func (dist Binomial) random() (float64, error) {
         if ix < 0 {
           goto TryAgain
         }
-        v *= (u - p2) * lambda_r 
+        v *= (u - p2) * lambda_r
       } else {
         ix = math.Floor(xr - (math.Log(v) / lambda_r))
         if ix > dist.Trials {

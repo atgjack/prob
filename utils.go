@@ -8,7 +8,7 @@ const beta_iterations = 1e9
 
 // The  regularized lower incomplete gamma function.
 // Code kanged from SAMTools: https://github.com/lh3/samtools/blob/master/bcftools/kfunc.c
-func Lowerincgamma(s float64, z float64) float64 {
+func GammaIncLower(s float64, z float64) float64 {
   var k, x, sum float64
   sum = 1
   x = 1
@@ -26,7 +26,7 @@ func Lowerincgamma(s float64, z float64) float64 {
 
 // Choose k elements from a set of n elements.
 // See: https://en.wikipedia.org/wiki/Binomial_coefficient
-func Choose(n, k float64) float64 {
+func BinomialCoefficient(n, k float64) float64 {
   if k > n {
     return math.NaN()
   }

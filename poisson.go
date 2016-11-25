@@ -83,7 +83,7 @@ func (dist Poisson) Cdf(x float64) (float64, error) {
   if (x < 0.0) {
     return 0.0, nil
   }
-  result := 1 - Lowerincgamma(math.Floor(x + 1), dist.Mu)
+  result := 1 - GammaIncLower(math.Floor(x + 1), dist.Mu)
   return result, nil
 }
 

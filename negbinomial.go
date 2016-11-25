@@ -82,7 +82,7 @@ func (dist NegBinomial) Pdf(x float64) (float64, error) {
     return 0.0, nil
   }
   x = math.Floor(x)
-  cnk := Choose(x + dist.Failures - 1.0, x)
+  cnk := BinomialCoefficient(x + dist.Failures - 1.0, x)
   pows := math.Pow(dist.Prob, x) * math.Pow(1.0 - dist.Prob, dist.Failures)
   result := cnk * pows
   return result, nil
