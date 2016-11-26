@@ -7,7 +7,7 @@ import "testing"
 func Test_ChiSquared(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       ChiSquared{10},
+      dist:       ChiSquared{10.0},
       mean:       10.0,
       variance:   20.0,
       stdDev:     4.472135954999579392818,
@@ -24,14 +24,10 @@ func Test_ChiSquared(t *testing.T) {
         inOut{ in: 2.5,   out: 0.009124279218395273144 },
         inOut{ in: 4.0,   out: 0.052653017343711156742 },
       },
-      sample: sampleValues{
-        mean:       10.0,
-        variance:   20.0,
-      },
     },
     // This is a Exponential distribution ;P
     distributionTest{
-      dist:       ChiSquared{2},
+      dist:       ChiSquared{2.0},
       mean:       2.0,
       variance:   4.0,
       stdDev:     2.0,
@@ -48,13 +44,15 @@ func Test_ChiSquared(t *testing.T) {
         inOut{ in: 2.5,   out: 0.7134952031398098996751 },
         inOut{ in: 4.0,   out: 0.864664716763387308106 },
       },
-      sample: sampleValues{
-        mean:       2.0,
-        variance:   4.0,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := ChiSquared{2.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

@@ -23,10 +23,6 @@ func Test_Exponential(t *testing.T) {
         inOut{ in: 2.5,   out: 0.2211992169285951317548 },
         inOut{ in: 4.0,   out: 0.3296799539643606992556 },
       },
-      sample: sampleValues{
-        mean:       10.0,
-        variance:   100.0,
-      },
     },
     distributionTest{
       dist:       Exponential{2},
@@ -46,13 +42,15 @@ func Test_Exponential(t *testing.T) {
         inOut{ in: 2.5,   out: 0.7134952031398098996751 },
         inOut{ in: 4.0,   out: 0.864664716763387308106 },
       },
-      sample: sampleValues{
-        mean:       2.0,
-        variance:   4.0,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Exponential{4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

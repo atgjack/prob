@@ -1,6 +1,10 @@
 package distributions
 
-import "testing"
+import (
+  "math"
+  "testing"
+  "fmt"
+)
 
 // Test at http://keisan.casio.com/exec/system/1180573225
 func Test_LogNormal(t *testing.T) {
@@ -23,11 +27,6 @@ func Test_LogNormal(t *testing.T) {
         inOut{ in: 3.0,   out: 0.1836911064379448915778 },
         inOut{ in: 5.0,   out: 0.3480604769177561100325 },
       },
-      sample: sampleValues{
-        mean:       12.18249396070347343807,
-        variance:   255.0156343901585191873,
-        epsilon:    0.015,
-      },
     },
     distributionTest{
       dist:       LogNormal{0.0, 2.0},
@@ -47,14 +46,41 @@ func Test_LogNormal(t *testing.T) {
         inOut{ in: 3.0,   out: 0.7086023142840820900523 },
         inOut{ in: 5.0,   out: 0.789509060951236854941 },
       },
-      sample: sampleValues{
-        mean:       7.38905609893065022723,
-        variance:   2926.359837008584035665,
-        epsilon:    .333,
-      },
     },
   }
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
+
+  sample := LogNormal{ 10, 4 }
+  if err := estimateLogNormal(sample); err != nil {
+    t.Fatal(err)
+  }
+}
+
+// This computes and compares parameters to MLE results.
+func estimateLogNormal(dist LogNormal) error {
+  samples, err := Sample(dist, numSamples)
+  if err != nil {
+    return fmt.Errorf("\nCould not generate samples.")
+  }
+  n := float64(numSamples)
+  sum := 0.0
+  for _, num := range samples {
+    sum += math.Log(num)
+  }
+  muhat := sum / n
+  sum = 0.0
+  for _, num := range samples {
+    diff := math.Log(num) - muhat
+    sum += diff * diff
+  }
+  sigmahat := math.Sqrt(sum / n)
+  if !floatsCentiEqual(muhat, dist.Mu) {
+    return fmt.Errorf("\nMuhat: %f\nMu: %f\n", muhat, dist.Mu)
+  }
+  if !floatsCentiEqual(sigmahat, dist.Sigma) {
+    return fmt.Errorf("\nSigmahat: %f\nSigma: %f\n", sigmahat, dist.Sigma)
+  }
+  return nil
 }

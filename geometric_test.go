@@ -26,10 +26,6 @@ func Test_Geometric(t *testing.T) {
         inOut{ in: 3.0,  out: 0.9375 },
         inOut{ in: 5.0,  out: 0.984375 },
       },
-      sample: sampleValues{
-        mean:       1.0,
-        variance:   2.0,
-      },
     },
     distributionTest{
       dist:       Geometric{0.2},
@@ -49,13 +45,15 @@ func Test_Geometric(t *testing.T) {
         inOut{ in: 3.0,  out: 0.5904 },
         inOut{ in: 5.0,  out: 0.737856 },
       },
-      sample: sampleValues{
-        mean:       4.0,
-        variance:   20.0,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Geometric{0.4}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

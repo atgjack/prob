@@ -97,36 +97,18 @@ func (dist Beta) Cdf(x float64) (float64, error) {
 }
 
 // Ref: https://github.com/ampl/gsl/blob/master/randist/beta.c
-func (dist Beta) random() (float64, error) {
+func (dist Beta) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  u1, err := Gamma{ Shape: dist.Alpha, Rate: 1.0 }.random()
+  u1, err := Gamma{ Shape: dist.Alpha, Rate: 1.0 }.Random()
   if err != nil {
     return math.NaN(), err
   }
-  u2, err := Gamma{ Shape: dist.Beta, Rate: 1.0 }.random()
+  u2, err := Gamma{ Shape: dist.Beta, Rate: 1.0 }.Random()
   if err != nil {
     return math.NaN(), err
   }
   result := u1 / (u1 + u2)
-  return result, nil
-}
-
-func (dist Beta) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
   return result, nil
 }

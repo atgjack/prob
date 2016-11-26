@@ -23,14 +23,16 @@ func Test_NegBinomial(t *testing.T) {
         inOut{ in: 3.0,  out: 0.046142578125 },
         inOut{ in: 5.0,  out: 0.15087890625 },
       },
-      sample: sampleValues{
-        mean:       10.0,
-        variance:   20.0,
-        epsilon:    0.06,
-      },
     },
   }
+  
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := NegBinomial{10.0, 0.5}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

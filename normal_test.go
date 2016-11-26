@@ -23,10 +23,6 @@ func Test_Normal(t *testing.T) {
         inOut{ in: 0.5,   out: 0.4502617751698871070207 },
         inOut{ in: 12.0,  out: 0.9970202367649454432457 },
       },
-      sample: sampleValues{
-        mean:       1.0,
-        variance:   16.0,
-      },
     },
     distributionTest{
       dist:       Normal{10.0, 2.0},
@@ -46,13 +42,15 @@ func Test_Normal(t *testing.T) {
         inOut{ in: 6.0,   out: 0.02275013194817920720028 },
         inOut{ in: 16.0,  out: 0.9986501019683699054733 },
       },
-      sample: sampleValues{
-        mean:       10.0,
-        variance:   4.0,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Normal{10.0, 4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

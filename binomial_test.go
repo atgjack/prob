@@ -23,13 +23,15 @@ func Test_Binomial(t *testing.T) {
         inOut{ in: 1.0,  out: 0.0107421875 },
         inOut{ in: 5.0,  out: 0.623046875 },
       },
-      sample: sampleValues{
-        mean:       5.0,
-        variance:   2.5,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Binomial{10.0, 0.5}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

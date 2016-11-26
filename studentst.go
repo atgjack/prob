@@ -133,16 +133,16 @@ func (dist StudentsT) Cdf(x float64) (float64, error) {
 }
 
 // Ref: https://github.com/ampl/gsl/blob/master/randist/tdist.c
-func (dist StudentsT) random() (float64, error) {
+func (dist StudentsT) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
   if (dist.Degrees <= 2) {
-    y1, _, err := Normal{ Mu: 0, Sigma: 1 }.random()
+    y1, err := Normal{ Mu: 0, Sigma: 1 }.Random()
     if err != nil {
       return math.NaN(), err
     }
-    y2, err := ChiSquared{ Degrees: dist.Degrees }.random()
+    y2, err := ChiSquared{ Degrees: dist.Degrees }.Random()
     if err != nil {
       return math.NaN(), err
     }
@@ -153,11 +153,11 @@ func (dist StudentsT) random() (float64, error) {
     var err error
     ok := true
     for ok {
-      y1, _, err = Normal{ Mu: 0, Sigma: 1 }.random()
+      y1, err = Normal{ Mu: 0, Sigma: 1 }.Random()
       if err != nil {
         return math.NaN(), err
       }
-      y1, err = Exponential{ Lambda: 1 / ((dist.Degrees / 2) - 1) }.random()
+      y2, err = Exponential{ Lambda: 1 / ((dist.Degrees / 2) - 1) }.Random()
       if err != nil {
         return math.NaN(), err
       }
@@ -167,22 +167,4 @@ func (dist StudentsT) random() (float64, error) {
     result := y1 / math.Sqrt((1 - (2 / dist.Degrees)) * (1 - z))
     return result, nil
   }
-}
-
-func (dist StudentsT) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
-  return result, nil
 }

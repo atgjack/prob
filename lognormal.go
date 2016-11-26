@@ -97,41 +97,14 @@ func (dist LogNormal) Cdf(x float64) (float64, error) {
 }
 
 // A lognormal random variate is e^Normal{mu, sigma}.
-func (dist LogNormal) random() (float64, float64, error) {
+func (dist LogNormal) Random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return math.NaN(), math.NaN(), err
+    return math.NaN(), err
   }
-  r1, r2, err := Normal{ Mu: dist.Mu, Sigma: dist.Sigma }.random()
+  random, err := Normal{ Mu: dist.Mu, Sigma: dist.Sigma }.Random()
   if err != nil {
-    return math.NaN(), math.NaN(), err
+    return math.NaN(), err
   }
-  lr1, lr2 := math.Exp(r1), math.Exp(r2)
-  return lr1, lr2, nil
-}
-
-func (dist LogNormal) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  var next, last float64
-  var skipGen bool
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    if (skipGen) {
-      next = last
-      skipGen = false
-    } else {
-      var err error
-      next, last, err = dist.random()
-      if err != nil {
-        return []float64{}, err
-      }
-      skipGen = true
-    }
-    result[i] = next
-  }
-  return result, nil
+  value := math.Exp(random)
+  return value, nil
 }

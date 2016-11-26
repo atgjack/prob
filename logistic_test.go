@@ -24,10 +24,6 @@ func Test_Logistic(t *testing.T) {
         inOut{ in: 3.0,   out: 0.7310585786300048792512 },
         inOut{ in: 9.0,   out: 0.9820137900379084419732 },
       },
-      sample: sampleValues{
-        mean:       1.0,
-        variance:   13.15947253478581149178,
-      },
     },
     distributionTest{
       dist:       Logistic{5, 4},
@@ -47,13 +43,15 @@ func Test_Logistic(t *testing.T) {
         inOut{ in: 3.0,   out: 0.3775406687981454353611 },
         inOut{ in: 9.0,   out: 0.7310585786300048792512 },
       },
-      sample: sampleValues{
-        mean:       5.0,
-        variance:   52.63789013914324596712,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Logistic{5.0, 4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

@@ -9,7 +9,7 @@ import (
 func Test_StudentsT(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       StudentsT{10},
+      dist:       StudentsT{10.0},
       mean:       0.0,
       variance:   1.25,
       stdDev:     1.118033988749895,
@@ -26,15 +26,10 @@ func Test_StudentsT(t *testing.T) {
         inOut{ in: 2.5,   out: 0.9842765778816955978753 },
         inOut{ in: 4.0,   out: 0.9987408336876316538681 },
       },
-      sample: sampleValues{
-        mean:       0.0,
-        variance:   1.25,
-        epsilon:    16.0,
-      },
     },
     // This is a Exponential distribution ;P
     distributionTest{
-      dist:       StudentsT{2},
+      dist:       StudentsT{2.0},
       mean:       0.0,
       variance:   math.Inf(1),
       stdDev:     math.Inf(1),
@@ -51,14 +46,20 @@ func Test_StudentsT(t *testing.T) {
         inOut{ in: 2.5,   out: 0.935194139889244595443 },
         inOut{ in: 4.0,   out: 0.9714045207910316829339 },
       },
-      sample: sampleValues{
-        mean:       0.0,
-        variance:   math.Inf(1),
-        epsilon:    1.0,
-      },
     },
   }
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  // Using high degrees of freedom to keep variance low.
+  // A custom test would be better, but there is no closed form MLE that I am aware of.
+  sample := StudentsT{15.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

@@ -14,7 +14,6 @@ type Poisson struct {
 }
 
 func (dist *Poisson) validate() error {
-  dist.Mu = math.Floor(dist.Mu)
   if dist.Mu <= 0 {
     return InvalidParamsError{ "Mu must be greater than zero." }
   }
@@ -87,7 +86,7 @@ func (dist Poisson) Cdf(x float64) (float64, error) {
   return result, nil
 }
 
-func (dist Poisson) random() (float64, error) {
+func (dist Poisson) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
@@ -95,12 +94,12 @@ func (dist Poisson) random() (float64, error) {
   k := 0.0
   for mu > 10.0 {
     m := math.Floor((mu * (7.0/8.0)) + 0.5)
-    x, err := Gamma{ Shape: m, Rate: 1.0 }.random()
+    x, err := Gamma{ Shape: m, Rate: 1.0 }.Random()
     if err != nil {
       return math.NaN(), err
     }
     if x >= mu {
-      rand, err := Binomial{ Prob: mu / x, Trials: m - 1 }.random()
+      rand, err := Binomial{ Prob: mu / x, Trials: m - 1 }.Random()
       if err != nil {
         return math.NaN(), err
       }
@@ -117,22 +116,4 @@ func (dist Poisson) random() (float64, error) {
     ok = prod > emu
   }
   return k - 1.0, nil
-}
-
-func (dist Poisson) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
-  return result, nil
 }

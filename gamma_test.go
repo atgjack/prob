@@ -27,10 +27,6 @@ func Test_Gamma(t *testing.T) {
         inOut{ in:  4.0,  out: 0.283375741272989098481 },
         inOut{ in:  6.0,  out: 0.7576078383294876513181 },
       },
-      sample: sampleValues{
-        mean:       5.0,
-        variance:   2.5,
-      },
     },
     distributionTest{
       dist:       Gamma{1, 4},
@@ -53,13 +49,15 @@ func Test_Gamma(t *testing.T) {
         inOut{ in:  1.0,  out: 0.9816843611112658197063 },
         inOut{ in:  2.0,  out: 0.9996645373720974881612 },
       },
-      sample: sampleValues{
-        mean:       0.25,
-        variance:   0.0625,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Gamma{10, 4}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

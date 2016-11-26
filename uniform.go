@@ -94,28 +94,10 @@ func (dist Uniform) Cdf(x float64) (float64, error) {
   return result, nil
 }
 
-func (dist Uniform) random() (float64, error) {
+func (dist Uniform) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
   value := dist.Min + (rand.Float64() * (dist.Max - dist.Min))
   return value, nil
-}
-
-func (dist Uniform) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
-  return result, nil
 }

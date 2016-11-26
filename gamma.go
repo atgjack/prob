@@ -106,13 +106,13 @@ func (dist Gamma) Cdf(x float64) (float64, error) {
 }
 
 // Ref: https://github.com/ampl/gsl/blob/master/randist/gamma.c
-func (dist Gamma) random() (float64, error) {
+func (dist Gamma) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
   if (dist.Shape < 1.0) {
     random := rand.Float64()
-    grandom, err := Gamma{ Shape: dist.Shape + 1.0, Rate: dist.Rate }.random()
+    grandom, err := Gamma{ Shape: dist.Shape + 1.0, Rate: dist.Rate }.Random()
     if err != nil {
       return math.NaN(), err
     }
@@ -127,7 +127,7 @@ func (dist Gamma) random() (float64, error) {
   c := 1.0 / math.Sqrt(9.0 * d)
   for {
     for {
-      random, _, err := Normal{ Mu: 0.0, Sigma: 1.0 }.random()
+      random, err := Normal{ Mu: 0.0, Sigma: 1.0 }.Random()
       if err != nil {
         return math.NaN(), err
       }
@@ -147,23 +147,5 @@ func (dist Gamma) random() (float64, error) {
     }
   }
   result := d * v / dist.Rate
-  return result, nil
-}
-
-func (dist Gamma) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
   return result, nil
 }

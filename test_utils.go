@@ -35,7 +35,6 @@ type distributionTest struct {
   kurtosis    float64
   pdf         []inOut
   cdf         []inOut
-  sample      sampleValues
 }
 
 // Run tests on distribtion examples.
@@ -98,37 +97,36 @@ func testValues(examples []distributionTest) error {
         return fmt.Errorf("\nCdf of %f:\n  Expected: %f\n  Got: %f\n", cdf.in, cdf.out, out)
       }
     }
-    if err := testSamples(example.dist, example.sample); err != nil {
-      return err
-    }
   }
   return nil
 }
 
-func testSamples(dist Distribution, expected sampleValues) error {
+func testSamples(dist Distribution) error {
   // Generate samples.
-  samples, err := dist.Sample(numSamples)
+  samples, err := Sample(dist, numSamples)
   if err != nil {
-    return fmt.Errorf("\nCould not generate 1,000,000 samples.")
+    return fmt.Errorf("\nCould not generate samples.")
   }
   // Test sample average against expected value if it exists.
   sampleMean := averageFloats(samples)
-  epsilon := expected.epsilon
-  if epsilon == 0.0 {
-    epsilon = 0.01
+  actualMean, err := dist.Mean()
+  if err != nil {
+    return err
   }
-  if !math.IsInf(expected.mean,0) && !math.IsNaN(expected.mean) {
-    diff := math.Abs(expected.mean - sampleMean) / sampleMean
-    if diff > epsilon {
-      return fmt.Errorf("\nSample average:\n  Expected: %f\n  Got: %f\n  Diff: %f\n", expected.mean, sampleMean, diff)
+  if !math.IsInf(actualMean,0) && !math.IsNaN(actualMean) {
+    if !floatsEqual(actualMean, sampleMean, defaultEpsilon) {
+      return fmt.Errorf("\nSample average:\n  Expected: %f\n  Got: %f\n", actualMean, sampleMean)
     }
   }
   // Test sample variance against expected variance if it exists.
   sampleVar := varianceFloats(samples, sampleMean)
-  if !math.IsInf(expected.variance,0) && !math.IsNaN(expected.variance) {
-    diff := math.Abs(expected.variance - sampleVar) / sampleVar
-    if diff > epsilon {
-      return fmt.Errorf("\nSample variance:\n  Expected: %f\n  Got: %f\n  Diff: %f\n", expected.variance, sampleVar, diff)
+  actualVar, err := dist.Mean()
+  if err != nil {
+    return err
+  }
+  if !math.IsInf(actualVar,0) && !math.IsNaN(actualVar) {
+    if !floatsEqual(actualVar, sampleMean, defaultEpsilon) {
+      return fmt.Errorf("\nSample variance:\n  Expected: %f\n  Got: %f\n", actualVar, sampleVar)
     }
   }
   return nil

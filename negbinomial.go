@@ -97,36 +97,19 @@ func (dist NegBinomial) Cdf(x float64) (float64, error) {
 }
 
 // Ref: https://github.com/ampl/gsl/blob/48fbd40c7c9c24913a68251d23bdbd0637bbda20/randist/nbinomial.c
-func (dist NegBinomial) random() (float64, error) {
+func (dist NegBinomial) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  g, err := Gamma{ Shape: dist.Failures, Rate: 1.0 }.random()
+  rate := (1.0 - dist.Prob) / dist.Prob
+  g, err := Gamma{ Shape: dist.Failures, Rate: rate }.Random()
   if err != nil {
     return math.NaN(), err
   }
-  p, err := Poisson{ Mu: g * (1.0 - dist.Prob) / dist.Prob }.random()
+  p, err := Poisson{ Mu: g }.Random()
   if err != nil {
     return math.NaN(), err
   }
   value := math.Floor(p + 0.5)
   return value, nil
-}
-
-func (dist NegBinomial) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, err
-    }
-    result[i] = value
-  }
-  return result, nil
 }

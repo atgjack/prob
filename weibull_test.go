@@ -8,13 +8,13 @@ import "testing"
 func Test_Weibull(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       Weibull{10, 2.5},
+      dist:       Weibull{10.0, 2.5},
       mean:       8.8726382,
       variance:   14.4146689,
       stdDev:     3.7966655,
       relStdDev:  0.4279072,
       skewness:   0.3586318,
-      kurtosis:   2.8567831 - 3,
+      kurtosis:   2.8567831 - 3.0,
       pdf: []inOut{
         inOut{ in: 2.0,   out: 0.02196423624549381206548 },
         inOut{ in: 6.0,   out: 0.08791475759141008819744 },
@@ -26,19 +26,15 @@ func Test_Weibull(t *testing.T) {
         inOut{ in: 6.0,   out: 0.2433502399169036679423 },
         inOut{ in: 10.0,  out: 0.6321205588285576784045 },
       },
-      sample: sampleValues{
-        mean:       8.8726382,
-        variance:   14.4146689,
-      },
     },
     distributionTest{
-      dist:       Weibull{1, 4},
+      dist:       Weibull{1.0, 4.0},
       mean:       0.9064025,
       variance:   0.0646615,
       stdDev:     0.2542862,
       relStdDev:  0.2805445,
       skewness:   -0.0872370,
-      kurtosis:   2.7478295 - 3,
+      kurtosis:   2.7478295 - 3.0,
       pdf: []inOut{
         inOut{ in: 1.0,   out: 1.471517764685769286382 },
         inOut{ in: 0.5,   out: 0.4697065314067378930599 },
@@ -49,13 +45,15 @@ func Test_Weibull(t *testing.T) {
         inOut{ in: 0.5,   out: 0.06058693718652421388029 },
         inOut{ in: 1.5,   out: 0.9936702845725142534231 },
       },
-      sample: sampleValues{
-        mean:       0.9064025,
-        variance:   0.0646615,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Weibull{10.0, 4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

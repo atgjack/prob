@@ -5,6 +5,9 @@ import (
   "math/rand"
 )
 
+var next float64
+var skip bool
+
 //The Normal(or Gaussian) Distribution is a continuous probability distribution
 // with parameters μ, σ >= 0.
 //
@@ -89,43 +92,21 @@ func (dist Normal) Cdf(x float64) (float64, error) {
   return result, nil
 }
 
-func (dist Normal) random() (float64, float64, error) {
+func (dist Normal) Random() (float64, error) {
   if err := dist.validate(); err != nil {
-    return math.NaN(), math.NaN(), err
+    return math.NaN(), err
   }
-  a := rand.Float64() * 2 * math.Pi
-  b := math.Sqrt(-2.0 * math.Log(1.0 - rand.Float64()))
-  z1 := math.Cos(a) * b
-  z2 := math.Sin(a) * b
-  r1 := dist.Mu + (z1 * dist.Sigma)
-  r2 := dist.Mu + (z2 * dist.Sigma)
-  return r1, r2, nil
-}
-
-// Generates n samples by using a Box–Muller transform.
-func (dist Normal) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
+  var value float64
+  if (skip) {
+    value = dist.Mu + (next * dist.Sigma)
+    skip = false
+  } else {
+    a := rand.Float64() * 2 * math.Pi
+    b := math.Sqrt(-2.0 * math.Log(1.0 - rand.Float64()))
+    z1 := math.Cos(a) * b
+    next = math.Sin(a) * b
+    value = dist.Mu + (z1 * dist.Sigma)
+    skip = true
   }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  var next, last float64
-  var skipGen bool
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    if (skipGen) {
-      next = last
-      skipGen = false
-    } else {
-      var err error
-      next, last, err = dist.random()
-      if err != nil {
-        return []float64{}, err
-      }
-      skipGen = true
-    }
-    result[i] = next
-  }
-  return result, nil
+  return value, nil
 }

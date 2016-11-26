@@ -129,7 +129,7 @@ func (dist Binomial) Cdf(x float64) (float64, error) {
 }
 
 // Ref: https://github.com/ampl/gsl/blob/48fbd40c7c9c24913a68251d23bdbd0637bbda20/randist/binomial_tpe.c
-func (dist Binomial) random() (float64, error) {
+func (dist Binomial) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
@@ -223,22 +223,4 @@ func (dist Binomial) random() (float64, error) {
       value = dist.Trials - ix
     }
     return value, nil
-}
-
-func (dist Binomial) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
-  return result, nil
 }

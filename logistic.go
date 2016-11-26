@@ -86,29 +86,11 @@ func (dist Logistic) Cdf(x float64) (float64, error) {
 }
 
 // Ref: http://www.stata.com/statalist/archive/2005-08/msg00131.html
-func (dist Logistic) random() (float64, error) {
+func (dist Logistic) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
   u := rand.Float64()
   value := dist.Location - (dist.Scale * math.Log((1 / u) - 1))
   return value, nil
-}
-
-func (dist Logistic) Sample(n int) ([]float64, error) {
-  if err := dist.validate(); err != nil {
-    return []float64{}, err
-  }
-  if n <= 0 {
-    return []float64{}, nil
-  }
-  result := make([]float64, n)
-  for i := 0; i < n; i++ {
-    value, err := dist.random()
-    if err != nil {
-      return []float64{}, nil
-    }
-    result[i] = value
-  }
-  return result, nil
 }

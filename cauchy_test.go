@@ -26,11 +26,6 @@ func Test_Cauchy(t *testing.T) {
         inOut{ in: 6.0,   out: 0.1475836176504332741754 },
         inOut{ in: 12.0,  out: 0.75 },
       },
-      sample: sampleValues{
-        mean:       10.0,
-        variance:   math.NaN(),
-        epsilon:    0.16,
-      },
     },
     distributionTest{
       dist:       Cauchy{1.0, 4.0},
@@ -50,13 +45,16 @@ func Test_Cauchy(t *testing.T) {
         inOut{ in: 0.5,   out: 0.4604165758394344579891 },
         inOut{ in: 8.0,   out: 0.8347506594614320903617 },
       },
-      sample: sampleValues{
-        mean:       math.NaN(),
-        variance:   math.NaN(),
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  // Doesn't do anything currently. No closed for MLE, so custom test is hard.
+  sample := Cauchy{1.0, 4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }

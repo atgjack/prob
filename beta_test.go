@@ -6,7 +6,7 @@ import "testing"
 func Test_Beta(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       Beta{1, 2},
+      dist:       Beta{1.0, 2.0},
       mean:       1.0 / 3.0,
       variance:   1.0 / 18.0,
       stdDev:     0.2357022603955158414669,
@@ -24,13 +24,9 @@ func Test_Beta(t *testing.T) {
         inOut{ in: 0.6,   out: 0.84 },
         inOut{ in: 0.14,  out: 0.2604 },
       },
-      sample: sampleValues{
-        mean:       1.0 / 3.0,
-        variance:   1.0 / 18.0,
-      },
     },
     distributionTest{
-      dist:       Beta{5, 4},
+      dist:       Beta{5.0, 4.0},
       mean:       5.0 / 9.0,
       variance:   2.0 / 81.0,
       stdDev:     0.1571348402636772276446,
@@ -47,13 +43,15 @@ func Test_Beta(t *testing.T) {
         inOut{ in: 0.6,   out: 0.5940864 },
         inOut{ in: 0.14,  out: 0.002079010303104 },
       },
-      sample: sampleValues{
-        mean:       5.0 / 9.0,
-        variance:   2.0 / 81.0,
-      },
     },
   }
+  
   if err := testValues(examples); err != nil {
+    t.Fatal(err)
+  }
+  
+  sample := Beta{5.0, 4.0}
+  if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }
