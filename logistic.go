@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Logistic_distribution
 type Logistic struct {
-  Location  float64
-  Scale     float64
+  Location  float64   `json:"location"`
+  Scale     float64   `json:"scale"`
 }
 
 func (dist Logistic) validate() error {

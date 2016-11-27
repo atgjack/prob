@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Pareto_distribution
 type Pareto struct {
-  Scale  float64
-  Shape  float64
+  Scale  float64  `json:"scale"`
+  Shape  float64  `json:"shape"`
 }
 
 func (dist Pareto) validate() error {

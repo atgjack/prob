@@ -51,15 +51,20 @@ func Test_StudentsT(t *testing.T) {
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   // Using high degrees of freedom to keep variance low.
   // A custom test would be better, but there is no closed form MLE that I am aware of.
   sample := StudentsT{15.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_StudentsT(b *testing.B) {
+  dist := StudentsT{15.0}
+  runBenchmark(b, dist)
 }

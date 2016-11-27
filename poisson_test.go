@@ -50,13 +50,19 @@ func Test_Poisson(t *testing.T) {
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
-  sample := Poisson{10.0}
+
+  sample := Poisson{11.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+
+func Benchmark_Poisson(b *testing.B) {
+  dist := Poisson{11.0}
+  runBenchmark(b, dist)
 }

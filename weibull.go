@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Weibull_distribution
 type Weibull struct {
-  Scale  float64
-  Shape  float64
+  Scale  float64  `json:"scale"`
+  Shape  float64  `json:"shape"`
 }
 
 func (dist Weibull) validate() error {

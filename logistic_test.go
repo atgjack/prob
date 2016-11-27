@@ -45,13 +45,18 @@ func Test_Logistic(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Logistic{5.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Logistic(b *testing.B) {
+  dist := Logistic{5.0, 4.0}
+  runBenchmark(b, dist)
 }

@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Cauchy_distribution
 type Cauchy struct {
-  Location  float64
-  Scale     float64
+  Location  float64   `json:"location"`
+  Scale     float64   `json:"scale"`
 }
 
 func (dist Cauchy) validate() error {

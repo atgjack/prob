@@ -9,8 +9,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Negative_binomial_distribution
 type NegBinomial struct {
-  Failures   float64
-  Prob    float64
+  Failures  float64   `json:"failures"`
+  Prob      float64   `json:"prob"`
 }
 
 func (dist *NegBinomial) validate() error {

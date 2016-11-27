@@ -9,8 +9,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Beta_distribution
 type Beta struct {
-  Alpha   float64
-  Beta    float64
+  Alpha   float64   `json:"alpha"`
+  Beta    float64   `json:"beta"`
 }
 
 func (dist Beta) validate() error {

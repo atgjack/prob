@@ -44,13 +44,18 @@ func Test_Exponential(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Exponential{4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Exponential(b *testing.B) {
+  dist := Exponential{4.0}
+  runBenchmark(b, dist)
 }

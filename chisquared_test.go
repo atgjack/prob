@@ -46,13 +46,18 @@ func Test_ChiSquared(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := ChiSquared{2.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_ChiSquared(b *testing.B) {
+  dist := ChiSquared{2.0}
+  runBenchmark(b, dist)
 }

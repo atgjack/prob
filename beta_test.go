@@ -45,13 +45,18 @@ func Test_Beta(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Beta{5.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Beta(b *testing.B) {
+  dist := Beta{5.0, 4.0}
+  runBenchmark(b, dist)
 }

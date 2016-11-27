@@ -13,8 +13,8 @@ var skip bool
 //
 // See: https://en.wikipedia.org/wiki/Normal_distribution
 type Normal struct {
-  Mu      float64
-  Sigma   float64
+  Mu      float64   `json:"mu"`
+  Sigma   float64   `json:"sigma"`
 }
 
 func (dist Normal) validate() error {
@@ -96,17 +96,18 @@ func (dist Normal) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  var value float64
-  if (skip) {
-    value = dist.Mu + (next * dist.Sigma)
-    skip = false
-  } else {
-    a := rand.Float64() * 2 * math.Pi
-    b := math.Sqrt(-2.0 * math.Log(1.0 - rand.Float64()))
-    z1 := math.Cos(a) * b
-    next = math.Sin(a) * b
-    value = dist.Mu + (z1 * dist.Sigma)
-    skip = true
-  }
+  // var value float64
+  // if (skip) {
+  //   value = dist.Mu + (next * dist.Sigma)
+  //   skip = false
+  // } else {
+  //   a := rand.Float64() * 2 * math.Pi
+  //   b := math.Sqrt(-2.0 * math.Log(1.0 - rand.Float64()))
+  //   z1 := math.Cos(a) * b
+  //   next = math.Sin(a) * b
+  //   value = dist.Mu + (z1 * dist.Sigma)
+  //   skip = true
+  // }
+  value := rand.NormFloat64() * dist.Sigma + dist.Mu
   return value, nil
 }

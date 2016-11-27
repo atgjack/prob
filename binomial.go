@@ -16,8 +16,8 @@ const (
 //
 // See: https://en.wikipedia.org/wiki/Binomial_distribution
 type Binomial struct {
-  Trials  float64
-  Prob    float64
+  Trials  float64   `json:"trials"`
+  Prob    float64   `json:"prob"`
 }
 
 func (dist *Binomial) validate() error {

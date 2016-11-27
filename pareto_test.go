@@ -50,11 +50,11 @@ func Test_Pareto(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Pareto{10.0, 5.0}
   if err := estimatePareto(sample); err != nil {
     t.Fatal(err)
@@ -87,4 +87,9 @@ func estimatePareto(dist Pareto) error {
     return fmt.Errorf("\nMin: %f\nScale: %f\n", min, dist.Scale)
   }
   return nil
+}
+
+func Benchmark_Pareto(b *testing.B) {
+  dist := Pareto{10.0, 5.0}
+  runBenchmark(b, dist)
 }

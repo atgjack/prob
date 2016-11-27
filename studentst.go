@@ -9,7 +9,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Student's_t-distribution
 type StudentsT struct {
-  Degrees  float64
+  Degrees  float64  `json:"degrees"`
 }
 
 func (dist StudentsT) validate() error {

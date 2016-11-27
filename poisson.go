@@ -10,7 +10,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Poisson_distribution
 type Poisson struct {
-  Mu  float64
+  Mu  float64   `json:"mu"`
 }
 
 func (dist *Poisson) validate() error {

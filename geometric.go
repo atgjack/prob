@@ -11,7 +11,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Geometric_distribution
 type Geometric struct {
-  Prob  float64
+  Prob  float64   `json:"prob"`
 }
 
 func (dist *Geometric) validate() error {

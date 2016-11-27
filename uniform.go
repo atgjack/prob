@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)
 type Uniform struct {
-  Min  float64
-  Max  float64
+  Min  float64  `json:"min"`
+  Max  float64  `json:"max"`
 }
 
 func (dist Uniform) validate() error {

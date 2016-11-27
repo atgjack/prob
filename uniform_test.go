@@ -54,13 +54,18 @@ func Test_Uniform(t *testing.T) {
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Uniform{0.0, 10.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Uniform(b *testing.B) {
+  dist := Uniform{0.0, 10.0}
+  runBenchmark(b, dist)
 }

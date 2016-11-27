@@ -52,7 +52,7 @@ func Test_LogNormal(t *testing.T) {
     t.Fatal(err)
   }
 
-  sample := LogNormal{ 10, 4 }
+  sample := LogNormal{10.0, 4.0}
   if err := estimateLogNormal(sample); err != nil {
     t.Fatal(err)
   }
@@ -83,4 +83,9 @@ func estimateLogNormal(dist LogNormal) error {
     return fmt.Errorf("\nSigmahat: %f\nSigma: %f\n", sigmahat, dist.Sigma)
   }
   return nil
+}
+
+func Benchmark_LogNormal(b *testing.B) {
+  dist := LogNormal{10.0, 4.0}
+  runBenchmark(b, dist)
 }

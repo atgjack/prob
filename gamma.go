@@ -10,8 +10,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Gamma_distribution
 type Gamma struct {
-  Shape   float64
-  Rate    float64
+  Shape   float64   `json:"shape"`
+  Rate    float64   `json:"rate"`
 }
 
 func (dist Gamma) validate() error {

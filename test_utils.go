@@ -1,6 +1,7 @@
 package distributions
 
 import (
+  "testing"
 	"math"
   "fmt"
   "math/rand"
@@ -196,4 +197,10 @@ func varianceFloats(values []float64, mean float64) float64 {
     total += diff * diff
   }
   return total / (float64(len(values)) - 1)
+}
+
+func runBenchmark(b *testing.B, dist Distribution) {
+  for n := 0; n <= b.N; n++ {
+    dist.Random()
+  }
 }

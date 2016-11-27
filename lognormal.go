@@ -9,8 +9,8 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/LogNormal_distribution
 type LogNormal struct {
-  Mu      float64
-  Sigma   float64
+  Mu      float64   `json:"mu"`
+  Sigma   float64   `json:"sigma"`
 }
 
 func (dist LogNormal) validate() error {

@@ -47,13 +47,18 @@ func Test_Geometric(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Geometric{0.4}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Geometric(b *testing.B) {
+  dist := Geometric{0.4}
+  runBenchmark(b, dist)
 }

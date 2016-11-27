@@ -47,14 +47,19 @@ func Test_Cauchy(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   // Doesn't do anything currently. No closed for MLE, so custom test is hard.
   sample := Cauchy{1.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Cauchy(b *testing.B) {
+  dist := Cauchy{1.0, 4.0}
+  runBenchmark(b, dist)
 }

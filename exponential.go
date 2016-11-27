@@ -10,7 +10,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Exponential_distribution
 type Exponential struct {
-  Lambda  float64
+  Lambda  float64   `json:"lambda"`
 }
 
 func (dist Exponential) validate() error {
@@ -89,6 +89,7 @@ func (dist Exponential) Random() (float64, error) {
   if err := dist.validate(); err != nil {
     return math.NaN(), err
   }
-  value := -1 * dist.Lambda * math.Log1p(-1 * rand.Float64())
+  // value := -1 * dist.Lambda * math.Log1p(-1 * rand.Float64())
+  value := rand.ExpFloat64() * dist.Lambda
   return value, nil
 }

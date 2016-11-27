@@ -51,13 +51,18 @@ func Test_Gamma(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
-  sample := Gamma{10, 4}
+
+  sample := Gamma{10.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Gamma(b *testing.B) {
+  dist := Gamma{10.0, 4.0}
+  runBenchmark(b, dist)
 }

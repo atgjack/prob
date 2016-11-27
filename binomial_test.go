@@ -25,13 +25,18 @@ func Test_Binomial(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Binomial{10.0, 0.5}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Binomial(b *testing.B) {
+  dist := Binomial{10.0, 0.5}
+  runBenchmark(b, dist)
 }

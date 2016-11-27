@@ -44,13 +44,18 @@ func Test_Normal(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Normal{10.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+func Benchmark_Normal(b *testing.B) {
+  dist := Normal{10.0, 4.0}
+  runBenchmark(b, dist)
 }

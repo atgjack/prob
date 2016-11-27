@@ -47,13 +47,19 @@ func Test_Weibull(t *testing.T) {
       },
     },
   }
-  
+
   if err := testValues(examples); err != nil {
     t.Fatal(err)
   }
-  
+
   sample := Weibull{10.0, 4.0}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
+}
+
+
+func Benchmark_Weibull(b *testing.B) {
+  dist := Weibull{10.0, 4.0}
+  runBenchmark(b, dist)
 }

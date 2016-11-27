@@ -9,7 +9,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Chi-squared_distribution
 type ChiSquared struct {
-  Degrees  float64
+  Degrees  float64  `json:"degrees"`
 }
 
 func (dist ChiSquared) validate() error {
