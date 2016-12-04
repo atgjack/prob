@@ -36,8 +36,8 @@ func Test_Pareto(t *testing.T) {
       variance:   1.666666666666666666667,
       stdDev:     1.290994448735805628393,
       relStdDev:  0.258198889747161125678,
-      skewness:   4.64758,
-      kurtosis:   70.8,
+      skewness:   4.647580015448900262215,
+      kurtosis:   73.8,
       pdf: []inOut{
         inOut{ in: 5.0,   out: 0.32768 },
         inOut{ in: 10.0,  out: 0.00512 },
@@ -64,8 +64,8 @@ func Test_Pareto(t *testing.T) {
 
 // This computes and compares parameters to MLE results.
 func estimatePareto(dist Pareto) error {
-  samples, err := Sample(dist, numSamples)
-  if err != nil {
+  samples := Sample(dist, numSamples)
+  if len(samples) != numSamples {
     return fmt.Errorf("\nCould not generate samples.")
   }
   n := float64(numSamples)

@@ -14,6 +14,14 @@ type Gamma struct {
   Rate    float64   `json:"rate"`
 }
 
+func NewGamma(shape float64, Rate float64) (Gamma, error) {
+  dist := Gamma{shape, Rate}
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist Gamma) validate() error {
   if dist.Shape <= 0 {
     return InvalidParamsError{ "Shape must be greater than zero." }
@@ -24,113 +32,77 @@ func (dist Gamma) validate() error {
   return nil
 }
 
-func (dist Gamma) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Mean() float64 {
   result := dist.Shape / dist.Rate
-  return result, nil
+  return result
 }
 
-func (dist Gamma) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Variance() float64 {
   result := dist.Shape / (dist.Rate * dist.Rate)
-  return result, nil
+  return result
 }
 
-func (dist Gamma) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Skewness() float64 {
   result := 2 / math.Sqrt(dist.Shape)
-  return result, nil
+  return result
 }
 
-func (dist Gamma) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Kurtosis() float64 {
   result := 6 / dist.Shape
-  return result, nil
+  return result
 }
 
-func (dist Gamma) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) StdDev() float64 {
   result := math.Sqrt(dist.Shape / (dist.Rate * dist.Rate))
-  return result, nil
+  return result
 }
 
-func (dist Gamma) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) RelStdDev() float64 {
   result := 1 / math.Sqrt(dist.Shape)
-  return result, nil
+  return result
 }
 
-func (dist Gamma) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Pdf(x float64) float64 {
   if x < 0 {
-    return 0.0, nil
+    return 0.0
   }
   if (x == 0) {
     if (dist.Shape == 1) {
-      return dist.Rate, nil
+      return dist.Rate
     }
-    return 0.0, nil
+    return 0.0
   }
   if (dist.Shape == 1) {
-    return math.Exp((-1 * x) * dist.Rate) * dist.Rate, nil
+    return math.Exp((-1 * x) * dist.Rate) * dist.Rate
   }
   first := (dist.Shape - 1) * math.Log(x * dist.Rate) - (x * dist.Rate)
   lgamma, _ := math.Lgamma(dist.Shape)
   result := math.Exp(first - lgamma) * dist.Rate
-  return result, nil
+  return result
 }
 
-func (dist Gamma) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Cdf(x float64) float64 {
   if (x <= 0) {
-    return 0.0, nil
+    return 0.0
   }
   result := GammaIncLower(dist.Shape, x * dist.Rate)
-  return result, nil
+  return result
 }
 
 // Ref: https://github.com/ampl/gsl/blob/master/randist/gamma.c
-func (dist Gamma) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Gamma) Random() float64 {
   if (dist.Shape < 1.0) {
     random := rand.Float64()
-    grandom, err := Gamma{ Shape: dist.Shape + 1.0, Rate: dist.Rate }.Random()
-    if err != nil {
-      return math.NaN(), err
-    }
+    grandom := Gamma{ Shape: dist.Shape + 1.0, Rate: dist.Rate }.Random()
     result := grandom * math.Pow(random, 1.0 / dist.Shape)
-    if err != nil {
-      return math.NaN(), err
-    }
-    return result, nil
+    return result
   }
   var x, v float64
   d := dist.Shape - (1.0 / 3.0)
   c := 1.0 / math.Sqrt(9.0 * d)
   for {
     for {
-      random, err := Normal{ Mu: 0.0, Sigma: 1.0 }.Random()
-      if err != nil {
-        return math.NaN(), err
-      }
+      random := Normal{ Mu: 0.0, Sigma: 1.0 }.Random()
       x = random
       v = 1.0 + (c * x)
       if v > 0.0 {
@@ -147,5 +119,5 @@ func (dist Gamma) Random() (float64, error) {
     }
   }
   result := d * v / dist.Rate
-  return result, nil
+  return result
 }

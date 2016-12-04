@@ -13,6 +13,14 @@ type Poisson struct {
   Mu  float64   `json:"mu"`
 }
 
+func NewPoisson(mu float64) (Poisson, error) {
+  dist := Poisson{ mu }
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist *Poisson) validate() error {
   if dist.Mu <= 0 {
     return InvalidParamsError{ "Mu must be greater than zero." }
@@ -20,90 +28,57 @@ func (dist *Poisson) validate() error {
   return nil
 }
 
-func (dist Poisson) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return dist.Mu, nil
+func (dist Poisson) Mean() float64 {
+  return dist.Mu
 }
 
-func (dist Poisson) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return dist.Mu, nil
+func (dist Poisson) Variance() float64 {
+  return dist.Mu
 }
 
-func (dist Poisson) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) Skewness() float64 {
   result := math.Pow(dist.Mu, -0.5)
-  return result, nil
+  return result
 }
 
-func (dist Poisson) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) Kurtosis() float64 {
   result := 1 / dist.Mu
-  return result, nil
+  return result
 }
 
-func (dist Poisson) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) StdDev() float64 {
   result := math.Sqrt(dist.Mu)
-  return result, nil
+  return result
 }
 
-func (dist Poisson) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) RelStdDev() float64 {
   result := math.Sqrt(dist.Mu) / dist.Mu
-  return result, nil
+  return result
 }
 
-func (dist Poisson) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) Pdf(x float64) float64 {
   lg, _ := math.Lgamma(x + 1)
   result := math.Exp((math.Log(dist.Mu) * x) -lg - dist.Mu)
-  return result, nil
+  return result
 }
 
-func (dist Poisson) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) Cdf(x float64) float64 {
   if (x < 0.0) {
-    return 0.0, nil
+    return 0.0
   }
   result := 1 - GammaIncLower(math.Floor(x + 1), dist.Mu)
-  return result, nil
+  return result
 }
 
-func (dist Poisson) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Poisson) Random() float64 {
   mu := dist.Mu
   k := 0.0
   for mu > 10.0 {
     m := math.Floor((mu * (7.0/8.0)) + 0.5)
-    x, err := Gamma{ Shape: m, Rate: 1.0 }.Random()
-    if err != nil {
-      return math.NaN(), err
-    }
+    x := Gamma{ Shape: m, Rate: 1.0 }.Random()
     if x >= mu {
-      rand, err := Binomial{ Prob: mu / x, Trials: m - 1 }.Random()
-      if err != nil {
-        return math.NaN(), err
-      }
-      return k + rand, nil
+      rand := Binomial{ Prob: mu / x, Trials: m - 1 }.Random()
+      return k + rand
     }
     k += m
     mu -= x
@@ -115,5 +90,5 @@ func (dist Poisson) Random() (float64, error) {
     k++
     ok = prod > emu
   }
-  return k - 1.0, nil
+  return k - 1.0
 }

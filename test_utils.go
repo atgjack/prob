@@ -43,58 +43,58 @@ func testValues(examples []distributionTest) error {
   rand.Seed(time.Now().UTC().UnixNano())
   for _, example := range examples {
     // Test mean.
-    mean, err := example.dist.Mean()
-    if err != nil || !floatsPicoEqual(mean, example.mean) {
+    mean := example.dist.Mean()
+    if !floatsPicoEqual(mean, example.mean) {
       if !checkInf(mean, example.mean) && !checkNaN(mean, example.mean) {
         return fmt.Errorf("\nMean:\n  Expected: %f\n  Got: %f\n", example.mean, mean)
       }
     }
     // Test variance.
-    variance, err := example.dist.Variance()
-    if err != nil || !floatsPicoEqual(variance, example.variance) {
+    variance := example.dist.Variance()
+    if !floatsPicoEqual(variance, example.variance) {
       if !checkInf(variance, example.variance) && !checkNaN(variance, example.variance) {
         return fmt.Errorf("\nVariance:\n  Expected: %f\n  Got: %f\n", example.variance, variance)
       }
     }
     // Test standard deviation.
-    stdDev, err := example.dist.StdDev()
-    if err != nil || !floatsPicoEqual(stdDev, example.stdDev) {
+    stdDev := example.dist.StdDev()
+    if !floatsPicoEqual(stdDev, example.stdDev) {
       if !checkInf(stdDev, example.stdDev) && !checkNaN(stdDev, example.stdDev) {
         return fmt.Errorf("\nStdDev:\n  Expected: %f\n  Got: %f\n", example.stdDev, stdDev)
       }
     }
     // Test relative standard deviation.
-    relStdDev, err := example.dist.RelStdDev()
-    if err != nil || !floatsPicoEqual(relStdDev, example.relStdDev) {
+    relStdDev := example.dist.RelStdDev()
+    if !floatsPicoEqual(relStdDev, example.relStdDev) {
       if !checkInf(relStdDev, example.relStdDev) && !checkNaN(relStdDev, example.relStdDev) {
         return fmt.Errorf("\nRelStdDev:\n  Expected: %f\n  Got: %f\n", example.relStdDev, relStdDev)
       }
     }
     // Test skewness.
-    skewness, err := example.dist.Skewness()
-    if err != nil || !floatsPicoEqual(skewness, example.skewness) {
+    skewness := example.dist.Skewness()
+    if !floatsPicoEqual(skewness, example.skewness) {
       if !checkInf(skewness, example.skewness) && !checkNaN(skewness, example.skewness) {
         return fmt.Errorf("\nSkewness:\n  Expected: %f\n  Got: %f\n", example.skewness, skewness)
       }
     }
     // Test excess kurtosis.
-    kurtosis, err := example.dist.Kurtosis()
-    if err != nil || !floatsPicoEqual(kurtosis, example.kurtosis) {
+    kurtosis := example.dist.Kurtosis()
+    if !floatsPicoEqual(kurtosis, example.kurtosis) {
       if !checkInf(kurtosis, example.kurtosis) && !checkNaN(kurtosis, example.kurtosis) {
         return fmt.Errorf("\nKurtosis:\n  Expected: %f\n  Got: %f\n", example.kurtosis, kurtosis)
       }
     }
     // Test pdf values.
     for _, pdf := range example.pdf {
-      out, err := example.dist.Pdf(pdf.in)
-      if err != nil || !floatsPicoEqual(out, pdf.out) {
+      out := example.dist.Pdf(pdf.in)
+      if !floatsPicoEqual(out, pdf.out) {
         return fmt.Errorf("\nPdf of %f:\n  Expected: %f\n  Got: %f\n", pdf.in, pdf.out, out)
       }
     }
     // Test cdf values.
     for _, cdf := range example.cdf {
-      out, err := example.dist.Cdf(cdf.in)
-      if err != nil || !floatsPicoEqual(out, cdf.out) {
+      out := example.dist.Cdf(cdf.in)
+      if !floatsPicoEqual(out, cdf.out) {
         return fmt.Errorf("\nCdf of %f:\n  Expected: %f\n  Got: %f\n", cdf.in, cdf.out, out)
       }
     }
@@ -104,16 +104,13 @@ func testValues(examples []distributionTest) error {
 
 func testSamples(dist Distribution) error {
   // Generate samples.
-  samples, err := Sample(dist, numSamples)
-  if err != nil {
+  samples := Sample(dist, numSamples)
+  if len(samples) != numSamples {
     return fmt.Errorf("\nCould not generate samples.")
   }
   // Test sample average against expected value if it exists.
   sampleMean := averageFloats(samples)
-  actualMean, err := dist.Mean()
-  if err != nil {
-    return err
-  }
+  actualMean := dist.Mean()
   if !math.IsInf(actualMean,0) && !math.IsNaN(actualMean) {
     if !floatsEqual(actualMean, sampleMean, defaultEpsilon) {
       return fmt.Errorf("\nSample average:\n  Expected: %f\n  Got: %f\n", actualMean, sampleMean)
@@ -121,12 +118,9 @@ func testSamples(dist Distribution) error {
   }
   // Test sample variance against expected variance if it exists.
   sampleVar := varianceFloats(samples, sampleMean)
-  actualVar, err := dist.Mean()
-  if err != nil {
-    return err
-  }
+  actualVar := dist.Variance()
   if !math.IsInf(actualVar,0) && !math.IsNaN(actualVar) {
-    if !floatsEqual(actualVar, sampleMean, defaultEpsilon) {
+    if !floatsEqual(actualVar, sampleVar, defaultEpsilon * 10) {
       return fmt.Errorf("\nSample variance:\n  Expected: %f\n  Got: %f\n", actualVar, sampleVar)
     }
   }
@@ -172,14 +166,14 @@ func checkInf(f1, f2 float64) bool {
   if math.IsInf(f1,0) || math.IsInf(f2,0) {
     return math.IsInf(f1,0) && math.IsInf(f2,0)
   }
-  return true
+  return false
 }
 
 func checkNaN(f1, f2 float64) bool {
   if math.IsNaN(f1) || math.IsNaN(f2) {
    return math.IsNaN(f1) && math.IsNaN(f2)
   }
-  return true
+  return false
 }
 
 func averageFloats(values []float64) float64 {

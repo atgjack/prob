@@ -10,7 +10,7 @@ func Test_Logistic(t *testing.T) {
       mean:       1.0,
       variance:   13.15947253478581149178,
       stdDev:     3.627598728468435701188,
-      relStdDev:  0.7071067811865475244008,
+      relStdDev:  3.627598728468435701188,
       skewness:   0.0,
       kurtosis:   1.2,
       pdf: []inOut{

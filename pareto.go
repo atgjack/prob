@@ -14,6 +14,14 @@ type Pareto struct {
   Shape  float64  `json:"shape"`
 }
 
+func NewPareto(scale float64, shape float64) (Pareto, error) {
+  dist := Pareto{scale, shape}
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist Pareto) validate() error {
   if dist.Scale <= 0 {
     return InvalidParamsError{ "Scale must be greater than zero." }
@@ -24,104 +32,77 @@ func (dist Pareto) validate() error {
   return nil
 }
 
-func (dist Pareto) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Mean() float64 {
   if (dist.Shape <= 1.0) {
-    return math.Inf(1), nil
+    return math.Inf(1)
   }
   result := (dist.Shape * dist.Scale) / (dist.Shape - 1)
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Variance() float64 {
   if (dist.Shape <= 2.0) {
-    return math.Inf(1), nil
+    return math.Inf(1)
   }
   result := (dist.Shape * dist.Scale * dist.Scale) / ((dist.Shape - 1) * (dist.Shape - 1) * (dist.Shape - 2))
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Skewness() float64 {
   if (dist.Shape < 3.0) {
-    return math.NaN(), nil
+    return math.NaN()
   }
   result := 2 * (1 + dist.Shape) / (dist.Shape - 3) * math.Sqrt((dist.Shape - 2) / dist.Shape)
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Kurtosis() float64 {
   if (dist.Shape < 3.0) {
-    return math.NaN(), nil
+    return math.NaN()
   }
-  result := 6 * ((dist.Shape * dist.Shape * dist.Shape) + (dist.Shape * dist.Shape) - (6 * (dist.Shape - 2))) / (dist.Shape * (dist.Shape - 3) * (dist.Shape - 4))
-  return result, nil
+  result := 3 * (dist.Shape - 2) * ((3 * dist.Shape * dist.Shape) + dist.Shape + 2) / ((dist.Shape - 4) * (dist.Shape - 3) * dist.Shape)
+  return result
 }
 
-func (dist Pareto) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  variance, _ := dist.Variance()
+func (dist Pareto) StdDev() float64 {
+  variance := dist.Variance()
   if math.IsInf(variance, 0) {
-    return math.Inf(1), nil
+    return math.Inf(1)
   }
   result := math.Sqrt(variance)
-  return result, nil
+  return result
 }
 
-func (dist Pareto) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  variance, _ := dist.Variance()
+func (dist Pareto) RelStdDev() float64 {
+  variance := dist.Variance()
   if math.IsInf(variance, 0) {
-    return math.Inf(1), nil
+    return math.Inf(1)
   }
-  mean, _ := dist.Mean()
+  mean := dist.Mean()
   if math.IsInf(mean, 0) {
-    return math.Inf(1), nil
+    return math.Inf(1)
   }
   result := math.Sqrt(variance) / mean
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Pdf(x float64) float64 {
   if x < dist.Scale {
-    return 0.0, nil
+    return 0.0
   }
   result := dist.Shape * math.Pow(dist.Scale, dist.Shape) / math.Pow(x, dist.Shape + 1)
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Cdf(x float64) float64 {
   if (x < dist.Scale) {
-    return 0.0, nil
+    return 0.0
   }
   result := 1 - math.Pow(dist.Scale / x, dist.Shape)
-  return result, nil
+  return result
 }
 
-func (dist Pareto) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Pareto) Random() float64 {
   value := dist.Scale / math.Pow(rand.Float64(), 1 / dist.Shape)
-  return value, nil
+  return value
 }

@@ -20,6 +20,14 @@ type Binomial struct {
   Prob    float64   `json:"prob"`
 }
 
+func NewBinomial(trials float64, prob float64) (Binomial, error) {
+  dist := Binomial{trials, prob}
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist *Binomial) validate() error {
   dist.Trials = math.Floor(dist.Trials)
   if dist.Trials < 0 {
@@ -31,92 +39,68 @@ func (dist *Binomial) validate() error {
   return nil
 }
 
-func (dist Binomial) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Mean() float64 {
   result := dist.Trials * dist.Prob
-  return result, nil
+  return result
 }
 
-func (dist Binomial) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Variance() float64 {
   result := dist.Trials * dist.Prob * (1 - dist.Prob)
-  return result, nil
+  return result
 }
 
-func (dist Binomial) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Skewness() float64 {
   result := (1 - (2 * dist.Prob)) / math.Sqrt(dist.Trials * dist.Prob * (1 - dist.Prob))
-  return result, nil
+  return result
 }
 
-func (dist Binomial) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Kurtosis() float64 {
   result := 3 - (6 / dist.Trials) + (1 / (dist.Trials * dist.Prob * (1 - dist.Prob)))
-  return result, nil
+  return result
 }
 
-func (dist Binomial) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) StdDev() float64 {
   result := math.Sqrt(dist.Trials * dist.Prob * (1 - dist.Prob))
-  return result, nil
+  return result
 }
 
-func (dist Binomial) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) RelStdDev() float64 {
   result := math.Sqrt((1 - dist.Prob) / (dist.Trials * dist.Prob))
-  return result, nil
+  return result
 }
 
-func (dist Binomial) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Pdf(x float64) float64 {
   if x < 0.0 || x > dist.Trials {
-    return 0.0, nil
+    return 0.0
   }
   x = math.Floor(x)
   if dist.Prob == 0 {
     if x == 0 {
-      return 1.0, nil
+      return 1.0
     }
-    return 0.0, nil
+    return 0.0
   }
   if dist.Prob == 1 {
     if x == dist.Trials {
-      return 1.0, nil
+      return 1.0
     }
-    return 0.0, nil
+    return 0.0
   }
   cnk := BinomialCoefficient(dist.Trials, x)
   pows := math.Pow(dist.Prob, x) * math.Pow(1 - dist.Prob, dist.Trials - x)
   if math.IsInf(cnk, 0) {
-    return 0.0, nil
+    return 0.0
   }
   result := cnk * pows
-  return result, nil
+  return result
 }
 
-func (dist Binomial) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Cdf(x float64) float64 {
   if (x < 0.0) {
-    return 0.0, nil
+    return 0.0
   }
   if (x > dist.Trials) {
-    return 1.0, nil
+    return 1.0
   }
   result := 0.0
   end := math.Floor(x) + 1
@@ -125,16 +109,13 @@ func (dist Binomial) Cdf(x float64) (float64, error) {
     pows := math.Pow(dist.Prob, i) * math.Pow(1 - dist.Prob, dist.Trials - i)
     result += current * pows
   }
-  return result, nil
+  return result
 }
 
 // Ref: https://github.com/ampl/gsl/blob/48fbd40c7c9c24913a68251d23bdbd0637bbda20/randist/binomial_tpe.c
-func (dist Binomial) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Binomial) Random() float64 {
   if dist.Trials == 0 {
-    return 0.0, nil
+    return 0.0
   }
   flipped := false
   ix := 0.0
@@ -222,5 +203,5 @@ func (dist Binomial) Random() (float64, error) {
     if flipped {
       value = dist.Trials - ix
     }
-    return value, nil
+    return value
 }

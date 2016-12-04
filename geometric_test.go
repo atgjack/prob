@@ -14,7 +14,7 @@ func Test_Geometric(t *testing.T) {
       variance:   2.0,
       stdDev:     math.Sqrt(2.0),
       relStdDev:  math.Sqrt(2.0),
-      skewness:   2.12132,
+      skewness:   2.121320343559642573203,
       kurtosis:   6.5,
       pdf: []inOut{
         inOut{ in: 1.0,  out: 0.25 },
@@ -33,7 +33,7 @@ func Test_Geometric(t *testing.T) {
       variance:   20.0,
       stdDev:     math.Sqrt(20),
       relStdDev:  math.Sqrt(20) / 4,
-      skewness:   2.01246,
+      skewness:   2.012461179749810726768,
       kurtosis:   6.05,
       pdf: []inOut{
         inOut{ in: 1.0,  out: 0.16 },

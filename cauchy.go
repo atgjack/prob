@@ -14,6 +14,14 @@ type Cauchy struct {
   Scale     float64   `json:"scale"`
 }
 
+func NewCauchy(location float64, scale float64) (Cauchy, error) {
+  dist := Cauchy{location, scale}
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist Cauchy) validate() error {
   if dist.Location <= 0 {
     return InvalidParamsError{ "Location must be greater than zero." }
@@ -21,74 +29,47 @@ func (dist Cauchy) validate() error {
   return nil
 }
 
-func (dist Cauchy) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) Mean() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) Variance() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) Skewness() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) Kurtosis() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) StdDev() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return math.NaN(), nil
+func (dist Cauchy) RelStdDev() float64 {
+  return math.NaN()
 }
 
-func (dist Cauchy) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Cauchy) Pdf(x float64) float64 {
   diff := x - dist.Location
   denom := (diff * diff) + (dist.Scale * dist.Scale)
   result := dist.Scale / denom / math.Pi
-  return result, nil
+  return result
 }
 
-func (dist Cauchy) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Cauchy) Cdf(x float64) float64 {
   result := (math.Atan((x - dist.Location) / dist.Scale) / math.Pi) + 0.5
-  return result, nil
+  return result
 }
 
-func (dist Cauchy) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Cauchy) Random() float64 {
   var u float64
   for u == 0.0 || u == 0.5 {
       u = rand.Float64()
   }
   result := dist.Location + (dist.Scale * math.Atan(math.Pi * u))
-  return result, nil
+  return result
 }

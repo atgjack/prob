@@ -17,6 +17,14 @@ type Normal struct {
   Sigma   float64   `json:"sigma"`
 }
 
+func NewNormal(mu float64, sigma float64) (Normal, error) {
+  dist := Normal{mu, sigma}
+  if err := dist.validate(); err != nil {
+    return dist, err
+  }
+  return dist, nil
+}
+
 func (dist Normal) validate() error {
   if dist.Sigma < 0 {
     return InvalidParamsError{ "Sigma must be greater than zero." }
@@ -24,78 +32,48 @@ func (dist Normal) validate() error {
   return nil
 }
 
-func (dist Normal) Mean() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return dist.Mu, nil
+func (dist Normal) Mean() float64 {
+  return dist.Mu
 }
 
-func (dist Normal) Variance() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Normal) Variance() float64 {
   result := dist.Sigma * dist.Sigma
-  return result, nil
+  return result
 }
 
-func (dist Normal) Skewness() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return 0.0, nil
+func (dist Normal) Skewness() float64 {
+  return 0.0
 }
 
-func (dist Normal) Kurtosis() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return 3.0, nil
+func (dist Normal) Kurtosis() float64 {
+  return 3.0
 }
 
-func (dist Normal) StdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  return dist.Sigma, nil
+func (dist Normal) StdDev() float64 {
+  return dist.Sigma
 }
 
-func (dist Normal) RelStdDev() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Normal) RelStdDev() float64 {
   result := dist.Sigma / dist.Mu
-  return result, nil
+  return result
 }
 
-func (dist Normal) Pdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
-  variance, err := dist.Variance()
-  if err != nil {
-    return math.NaN(), err
-  }
+func (dist Normal) Pdf(x float64) float64 {
+  variance := dist.Variance()
   diff := x - dist.Mu
   expo := -1 * diff * diff / (2 * variance)
   denom := math.Sqrt(2 * variance * math.Pi)
   result := math.Exp(expo) / denom
-  return result, nil
+  return result
 }
 
-func (dist Normal) Cdf(x float64) (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Normal) Cdf(x float64) float64 {
   inner := 1 + math.Erf( (x - dist.Mu) / (dist.Sigma * math.Sqrt(2)) )
   result := math.Abs(inner) / 2;
-  return result, nil
+  return result
 }
 
-func (dist Normal) Random() (float64, error) {
-  if err := dist.validate(); err != nil {
-    return math.NaN(), err
-  }
+func (dist Normal) Random() float64 {
   // var value float64
   // if (skip) {
   //   value = dist.Mu + (next * dist.Sigma)
@@ -109,5 +87,5 @@ func (dist Normal) Random() (float64, error) {
   //   skip = true
   // }
   value := rand.NormFloat64() * dist.Sigma + dist.Mu
-  return value, nil
+  return value
 }

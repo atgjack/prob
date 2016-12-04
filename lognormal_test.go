@@ -14,7 +14,7 @@ func Test_LogNormal(t *testing.T) {
       mean:       12.18249396070347343807,
       variance:   255.0156343901585191873,
       stdDev:     15.96920894691275930978,
-      relStdDev:  14.68685915835065706638,
+      relStdDev:  1.310832494432086175907,
       skewness:   6.184877138632554794835,
       kurtosis:   110.9363921763115252417,
       pdf: []inOut{
@@ -33,7 +33,7 @@ func Test_LogNormal(t *testing.T) {
       mean:       7.38905609893065022723,
       variance:   2926.359837008584035665,
       stdDev:     54.09583936874058742019,
-      relStdDev:  0.258198889747161125678,
+      relStdDev:  7.321075742890810925401,
       skewness:   414.3593433001470351088,
       kurtosis:   9220556.977307005663203,
       pdf: []inOut{
@@ -60,8 +60,8 @@ func Test_LogNormal(t *testing.T) {
 
 // This computes and compares parameters to MLE results.
 func estimateLogNormal(dist LogNormal) error {
-  samples, err := Sample(dist, numSamples)
-  if err != nil {
+  samples := Sample(dist, numSamples)
+  if len(samples) != numSamples {
     return fmt.Errorf("\nCould not generate samples.")
   }
   n := float64(numSamples)

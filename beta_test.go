@@ -30,7 +30,7 @@ func Test_Beta(t *testing.T) {
       mean:       5.0 / 9.0,
       variance:   2.0 / 81.0,
       stdDev:     0.1571348402636772276446,
-      relStdDev:  0.258198889747161125678,
+      relStdDev:  0.2828427124746190097603,
       skewness:   -0.1285648693066450044365,
       kurtosis:   -21.0 / 44.0,
       pdf: []inOut{
