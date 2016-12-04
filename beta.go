@@ -15,13 +15,13 @@ type Beta struct {
 
 func NewBeta(alpha float64, beta float64) (Beta, error) {
   dist := Beta{alpha, beta}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Beta) validate() error {
+func (dist Beta) Validate() error {
   if dist.Alpha <= 0 {
     return InvalidParamsError{ "Alpha must be greater than zero." }
   }

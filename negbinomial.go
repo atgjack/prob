@@ -15,13 +15,13 @@ type NegBinomial struct {
 
 func NewNegBinomial(failures float64, prob float64) (NegBinomial, error) {
   dist := NegBinomial{failures, prob}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist *NegBinomial) validate() error {
+func (dist *NegBinomial) Validate() error {
   dist.Failures = math.Floor(dist.Failures)
   if dist.Failures < 0.0 {
     return InvalidParamsError{ "Failures must be greater than zero." }

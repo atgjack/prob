@@ -14,13 +14,13 @@ type ChiSquared struct {
 
 func NewChiSquared(degrees float64) (ChiSquared, error) {
   dist := ChiSquared{ degrees }
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist ChiSquared) validate() error {
+func (dist ChiSquared) Validate() error {
   if dist.Degrees <= 0 {
     return InvalidParamsError{ "Degrees must be greater than zero." }
   }

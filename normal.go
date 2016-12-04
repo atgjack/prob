@@ -19,13 +19,13 @@ type Normal struct {
 
 func NewNormal(mu float64, sigma float64) (Normal, error) {
   dist := Normal{mu, sigma}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Normal) validate() error {
+func (dist Normal) Validate() error {
   if dist.Sigma < 0 {
     return InvalidParamsError{ "Sigma must be greater than zero." }
   }

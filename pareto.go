@@ -16,13 +16,13 @@ type Pareto struct {
 
 func NewPareto(scale float64, shape float64) (Pareto, error) {
   dist := Pareto{scale, shape}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Pareto) validate() error {
+func (dist Pareto) Validate() error {
   if dist.Scale <= 0 {
     return InvalidParamsError{ "Scale must be greater than zero." }
   }

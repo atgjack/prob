@@ -16,13 +16,13 @@ type Gamma struct {
 
 func NewGamma(shape float64, Rate float64) (Gamma, error) {
   dist := Gamma{shape, Rate}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Gamma) validate() error {
+func (dist Gamma) Validate() error {
   if dist.Shape <= 0 {
     return InvalidParamsError{ "Shape must be greater than zero." }
   }

@@ -15,13 +15,13 @@ type LogNormal struct {
 
 func NewLogNormal(mu float64, sigma float64) (LogNormal, error) {
   dist := LogNormal{mu, sigma}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist LogNormal) validate() error {
+func (dist LogNormal) Validate() error {
   if dist.Sigma < 0 {
     return InvalidParamsError{ "Sigma must be greater than zero." }
   }

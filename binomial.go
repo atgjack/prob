@@ -22,13 +22,13 @@ type Binomial struct {
 
 func NewBinomial(trials float64, prob float64) (Binomial, error) {
   dist := Binomial{trials, prob}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist *Binomial) validate() error {
+func (dist *Binomial) Validate() error {
   dist.Trials = math.Floor(dist.Trials)
   if dist.Trials < 0 {
     return InvalidParamsError{ "Trials must be greater than zero." }

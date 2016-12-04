@@ -15,13 +15,13 @@ type Exponential struct {
 
 func NewExponential(lambda float64) (Exponential, error) {
   dist := Exponential{ lambda }
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Exponential) validate() error {
+func (dist Exponential) Validate() error {
   if dist.Lambda <= 0 {
     return InvalidParamsError{ "Lambda must be greater than zero." }
   }

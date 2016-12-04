@@ -8,6 +8,7 @@ import (
 //
 // See: https://en.wikipedia.org/wiki/Probability_distribution
 type Distribution interface {
+  Validate()    error
   Mean()        float64
   Variance()    float64
   Kurtosis()    float64

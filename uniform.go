@@ -16,13 +16,13 @@ type Uniform struct {
 
 func NewUniform(min float64, max float64) (Uniform, error) {
   dist := Uniform{min, max}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Uniform) validate() error {
+func (dist Uniform) Validate() error {
   if dist.Max <= dist.Min {
     return InvalidParamsError{ "Max must be greater than Min." }
   }

@@ -16,13 +16,13 @@ type Cauchy struct {
 
 func NewCauchy(location float64, scale float64) (Cauchy, error) {
   dist := Cauchy{location, scale}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Cauchy) validate() error {
+func (dist Cauchy) Validate() error {
   if dist.Location <= 0 {
     return InvalidParamsError{ "Location must be greater than zero." }
   }

@@ -16,13 +16,13 @@ type Weibull struct {
 
 func NewWeibull(scale float64, shape float64) (Weibull, error) {
   dist := Weibull{scale, shape}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Weibull) validate() error {
+func (dist Weibull) Validate() error {
   if dist.Scale <= 0 {
     return InvalidParamsError{ "Scale must be greater than zero." }
   }

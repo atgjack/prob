@@ -16,13 +16,13 @@ type Logistic struct {
 
 func NewLogistic(location float64, scale float64) (Logistic, error) {
   dist := Logistic{location, scale}
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist Logistic) validate() error {
+func (dist Logistic) Validate() error {
   if dist.Scale <= 0 {
     return InvalidParamsError{ "Scale must be greater than zero." }
   }

@@ -14,13 +14,13 @@ type StudentsT struct {
 
 func NewStudentsT(degrees float64) (StudentsT, error) {
   dist := StudentsT{ degrees }
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist StudentsT) validate() error {
+func (dist StudentsT) Validate() error {
   if dist.Degrees <= 0 {
     return InvalidParamsError{ "Degrees must be greater than zero." }
   }

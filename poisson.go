@@ -15,13 +15,13 @@ type Poisson struct {
 
 func NewPoisson(mu float64) (Poisson, error) {
   dist := Poisson{ mu }
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist *Poisson) validate() error {
+func (dist *Poisson) Validate() error {
   if dist.Mu <= 0 {
     return InvalidParamsError{ "Mu must be greater than zero." }
   }

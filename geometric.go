@@ -16,13 +16,13 @@ type Geometric struct {
 
 func NewGeometric(prob float64) (Geometric, error) {
   dist := Geometric{ prob }
-  if err := dist.validate(); err != nil {
+  if err := dist.Validate(); err != nil {
     return dist, err
   }
   return dist, nil
 }
 
-func (dist *Geometric) validate() error {
+func (dist *Geometric) Validate() error {
   if dist.Prob <= 0 || dist.Prob > 1 {
     return InvalidParamsError{ "Mu must be between zero and one or one." }
   }
