@@ -7,7 +7,7 @@ import "testing"
 func Test_Gamma(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       Gamma{10, 2},
+      dist:       &Gamma{10, 2},
       mean:       5.0,
       variance:   2.5,
       stdDev:     1.5811388300841898,
@@ -29,7 +29,7 @@ func Test_Gamma(t *testing.T) {
       },
     },
     distributionTest{
-      dist:       Gamma{1, 4},
+      dist:       &Gamma{1, 4},
       mean:       0.25,
       variance:   0.0625,
       stdDev:     0.25,

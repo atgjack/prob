@@ -21,7 +21,7 @@ func NewPoisson(mu float64) (Poisson, error) {
   return dist, nil
 }
 
-func (dist *Poisson) Validate() error {
+func (dist Poisson) Validate() error {
   if dist.Mu <= 0 {
     return InvalidParamsError{ "Mu must be greater than zero." }
   }

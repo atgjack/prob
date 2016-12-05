@@ -9,7 +9,7 @@ import (
 func Test_Geometric(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       Geometric{0.5},
+      dist:       &Geometric{0.5},
       mean:       1.0,
       variance:   2.0,
       stdDev:     math.Sqrt(2.0),
@@ -28,7 +28,7 @@ func Test_Geometric(t *testing.T) {
       },
     },
     distributionTest{
-      dist:       Geometric{0.2},
+      dist:       &Geometric{0.2},
       mean:       4.0,
       variance:   20.0,
       stdDev:     math.Sqrt(20),
@@ -52,13 +52,13 @@ func Test_Geometric(t *testing.T) {
     t.Fatal(err)
   }
 
-  sample := Geometric{0.4}
+  sample := &Geometric{0.4}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }
 
 func Benchmark_Geometric(b *testing.B) {
-  dist := Geometric{0.4}
+  dist := &Geometric{0.4}
   runBenchmark(b, dist)
 }

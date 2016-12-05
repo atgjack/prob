@@ -6,7 +6,7 @@ import "testing"
 func Test_NegBinomial(t *testing.T) {
   examples := []distributionTest{
     distributionTest{
-      dist:       NegBinomial{10.0, 0.5},
+      dist:       &NegBinomial{10.0, 0.5},
       mean:       10.0,
       variance:   20.0,
       stdDev:     4.472135954999579392818,
@@ -17,11 +17,13 @@ func Test_NegBinomial(t *testing.T) {
         inOut{ in: 1.0,  out: 0.0048828125 },
         inOut{ in: 3.0,  out: 0.02685546875 },
         inOut{ in: 5.0,  out: 0.06109619140625 },
+        inOut{ in: 20.0, out: 0.0093272002413868904114 },
       },
       cdf: []inOut{
         inOut{ in: 1.0,  out: 0.005859375 },
         inOut{ in: 3.0,  out: 0.046142578125 },
         inOut{ in: 5.0,  out: 0.15087890625 },
+        inOut{ in: 20.0, out: 0.9786130273714661598206 },
       },
     },
   }
@@ -31,13 +33,13 @@ func Test_NegBinomial(t *testing.T) {
     t.Fatal(err)
   }
 
-  sample := NegBinomial{10.0, 0.5}
+  sample := &NegBinomial{10.0, 0.5}
   if err := testSamples(sample); err != nil {
     t.Fatal(err)
   }
 }
 
 func Benchmark_NegBinomial(b *testing.B) {
-  dist := NegBinomial{10.0, 0.5}
+  dist := &NegBinomial{10.0, 0.5}
   runBenchmark(b, dist)
 }

@@ -65,7 +65,7 @@ func (dist NegBinomial) RelStdDev() float64 {
 }
 
 func (dist NegBinomial) Pdf(x float64) float64 {
-  if x < 0.0 || x > dist.Failures {
+  if x < 0.0 {
     return 0.0
   }
   x = math.Floor(x)
