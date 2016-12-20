@@ -1,4 +1,4 @@
-package distributions
+package prob
 
 import (
   "testing"

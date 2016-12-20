@@ -1,6 +1,6 @@
-# distributions
+# prob 
 
-[![GoDoc](https://godoc.org/github.com/atgJack/distributions?status.svg)](https://godoc.org/github.com/atgJack/distributions)
+[![GoDoc](https://godoc.org/github.com/atgjack/prob?status.svg)](https://godoc.org/github.com/atgjack/prob)
 ![](https://img.shields.io/badge/license-MIT-blue.svg)
 
 A GoLang library providing statistics and sampling of probability distributions.

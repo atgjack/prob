@@ -1,10 +1,10 @@
-package distributions
+package prob
 
 import (
   "math"
 )
 
-// Distirbution is an interface for impementing continuous probability distributions.
+// Distirbution is an interface for impementing continuous probability prob.
 //
 // See: https://en.wikipedia.org/wiki/Probability_distribution
 type Distribution interface {
